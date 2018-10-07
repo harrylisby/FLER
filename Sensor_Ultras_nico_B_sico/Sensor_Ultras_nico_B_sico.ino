@@ -41,10 +41,10 @@ void loop() {
 
   //MOTOR
   if (d < 15){
-    digitalWrite(IN3, HIGH);
+    digitalWrite(IN3, LOW);
   }
   else{
-    digitalWrite(IN3, LOW);
+    digitalWrite(IN3, HIGH);
   }
   
   delay(100); // hacemos una pausa de 100ms
