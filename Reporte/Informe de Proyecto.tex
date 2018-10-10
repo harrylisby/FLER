@@ -1,0 +1,76 @@
+\documentclass[12pt,letterpaper]{IEEEtran}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{graphicx}
+\graphicspath{{Imagenes/}}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=VHDL,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\title{Informe de Proyecto: FLER(Four Leg Explorer Robot) }
+\author{Integrantes:Alison Lisby, Emmanuel Rodríguez,Kenneth Leiva, Harry Lisby}
+
+\date {today}
+
+\begin{document}
+\maketitle 
+\renewcommand{\leftmark}{UNIVERSIDAD LATINA DE COSTA RICA -- BINGE-61 Microcontroladores}
+
+\begin{abstract}
+Este proyecto tiene como objetivo la aplicación de los conceptos aprendidos de los dispositivos de open source, desde  los protocolos de conexión que tienen hasta su capacidades a la hora de controlar otros dispositivos.
+		
+\end{abstract}
+
+\section{Descripción del Proyecto}
+El FLER es un dispositivo capaz de desplazarse de manera autónoma evitando obstáculos, que además tendrá la capacidad de muestrear las condiciones ambientales de un área específica y compartirlas de manera remota con el usuario, con el fin de determinar si las condiciones son seguras para un humano.
+
+
+
+ 
+
+\section{Conceptos Aprendidos}
+\begin{itemize}
+  \item Instalar el sensor ultrasónico HC-SR04 en una placa arduino UNO y desarrollar el código respectivo para detectar obstáculos.
+  \item Instalar un sensor infrarrojo con su respectivo código para detección de obstáculos.
+  \item  Determinar cual es el mejor sensor en términos de sensibilidad y respuesta ante la presencia de objetos.
+  \item Instalar el sensor DTH22 en una placa arduino UNO y desarrollar el código correspondiente para el monitoreo de temperatura y humedad relativa.
+  \item Instalar el sensor MQ-2 en la misma placa y desarrollar el código respectivo para el monitoreo de gases peligrosos en el ambiente.
+  \item  Analizar los datos y validar la exactitud de los mismos comparándolos contra un tercer elemento (medidor de condiciones ambientales).
+  \item Investigar la mejor opción para el mapeo de los datos a través de internet por ejemplo ``pubnub'' ó ``Cayenne''.
+  \item Investigar y realizar pruebas con el microcontrolador ES8266 NodeMCU para la transmisión de datos por internet.
+  \item Desarrollar el código correspondiente para el control de los motores y unidad principal mediante un modelo cinemático, utilizando el microcontrolador STM32F103.
+  \item Investigar el uso de acelerómetros para el control de estabilidad. 
+  \item Eventualmente, instalar una cámara y configurarla através de una plataforma raspberry pi 3.
+  \item Investigar y configurar la opción de video de la cámara de manera que se pueda acceder por internet.
+  
+   
+ 
+   
+\end{itemize}
+
+\end{document}
