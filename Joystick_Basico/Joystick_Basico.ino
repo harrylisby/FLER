@@ -2,6 +2,10 @@ int xVal; //X values from joystick
 
 int yVal; //Y values from joystick
 
+int boton = 2;
+
+int valBoton;
+
 void setup() {
 
 Serial.begin(9600); //Starts serial at 9600 baud
@@ -9,6 +13,8 @@ Serial.begin(9600); //Starts serial at 9600 baud
 pinMode(A0, INPUT); //Sets the analog ports used to an input
 
 pinMode(A1, INPUT);
+
+pinMode(boton, INPUT_PULLUP);
 
 }
 
@@ -18,38 +24,29 @@ xVal = analogRead(A0); //sets the X value
 
 yVal = analogRead(A1); //sets the Y value
 
-if(yVal==510 && xVal==512){
-  Serial.print("CENTRO");
-}
+valBoton = digitalRead(boton);
 
-else if(xVal==0){
-  Serial.print("DERECHA");
-}
+Serial.print(" Y is...");
 
-else if(xVal == 1023){
-  Serial.print("IZQUIERDA");
-}
+Serial.print(yVal); //prints Y values
 
-else if(yVal==0){
-  Serial.print("ABAJO");
-}
+Serial.print("   ");
 
-else if(yVal==1023){
-  Serial.print("ARRIBA");
+Serial.print(" X is...");
+
+Serial.print(xVal); //prints X values
+
+Serial.print("   ");
+
+Serial.print("Boton: ");
+
+if(valBoton == 0){
+  Serial.print("ON");
+}
+else{
+  Serial.print("OFF");
 }
 
 Serial.println();
-
-//Serial.print(" Y is...");
-//
-//Serial.print(yVal); //prints Y values
-//
-//Serial.print("   ");
-//
-//Serial.print(" X is...");
-//
-//Serial.print(xVal); //prints X values
-//
-//Serial.println();
 
 }
