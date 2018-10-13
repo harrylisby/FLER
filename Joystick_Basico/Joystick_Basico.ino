@@ -18,16 +18,38 @@ xVal = analogRead(A0); //sets the X value
 
 yVal = analogRead(A1); //sets the Y value
 
-Serial.print(" Y is...");
+if(yVal==510 && xVal==512){
+  Serial.print("CENTRO");
+}
 
-Serial.print(yVal); //prints Y values
+else if(xVal==0){
+  Serial.print("DERECHA");
+}
 
-Serial.print("   ");
+else if(xVal == 1023){
+  Serial.print("IZQUIERDA");
+}
 
-Serial.print(" X is...");
+else if(yVal==0){
+  Serial.print("ABAJO");
+}
 
-Serial.print(xVal); //prints X values
+else if(yVal==1023){
+  Serial.print("ARRIBA");
+}
 
 Serial.println();
+
+//Serial.print(" Y is...");
+//
+//Serial.print(yVal); //prints Y values
+//
+//Serial.print("   ");
+//
+//Serial.print(" X is...");
+//
+//Serial.print(xVal); //prints X values
+//
+//Serial.println();
 
 }
