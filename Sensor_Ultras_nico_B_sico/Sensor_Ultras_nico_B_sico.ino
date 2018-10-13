@@ -46,6 +46,5 @@ void loop() {
   else{
     digitalWrite(IN3, HIGH);
   }
-  
   delay(100); // hacemos una pausa de 100ms
 }
