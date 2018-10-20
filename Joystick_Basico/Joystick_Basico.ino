@@ -26,27 +26,4 @@ yVal = analogRead(A1); //sets the Y value
 
 valBoton = digitalRead(boton);
 
-Serial.print(" Y is...");
-
-Serial.print(yVal); //prints Y values
-
-Serial.print("   ");
-
-Serial.print(" X is...");
-
-Serial.print(xVal); //prints X values
-
-Serial.print("   ");
-
-Serial.print("Boton: ");
-
-if(valBoton == 0){
-  Serial.print("ON");
-}
-else{
-  Serial.print("OFF");
-}
-
-Serial.println();
-
 }
