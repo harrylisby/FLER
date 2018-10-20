@@ -5,11 +5,9 @@ joystickReader joy(A0,A1,2);
 uint32_t actualMillis=0;
 uint32_t prevMillis=0;
 
-
 void setup() {
   Serial.begin(9600);
   Serial.print("Started");
-
 }
 
 void loop() {
