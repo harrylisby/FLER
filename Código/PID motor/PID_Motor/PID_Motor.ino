@@ -55,7 +55,7 @@ void loop()
   myPID.Compute();
   
   //
-  Serial.print(enable);
+  //Serial.print(enable);
   Serial.println(" : "+String(grados));
 
   analogWrite(PIN_OUTPUT, abs(enable));
