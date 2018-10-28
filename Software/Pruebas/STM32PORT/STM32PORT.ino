@@ -25,11 +25,11 @@ uint32_t scaled,scaled2;
 
 
 //Parámetros para control del PID (agresivo y conservador)
-double aggKp = 50, aggKi = 0.00, aggKd = 8;
-double consKp = 25, consKi = 0.00, consKd = 3; //consKp=1, consKi=0.00, consKd=0.25;
+double aggKp = 8, aggKi = 0.00, aggKd = 1.5;
+double consKp = 4.5, consKi = 0.00, consKd = 0.75; //consKp=1, consKi=0.00, consKd=0.25;
 
 //Variables del PID y configuración inicial (agresiva)
-PID myPID(&encRead2, &output1, &setPoint1, consKp, consKi, consKd, DIRECT);
+PID myPID(&encRead1, &output1, &setPoint1, consKp, consKi, consKd, DIRECT);
 PID pid2(&encRead2, &output2, &setPoint2, consKp, consKi, consKd, DIRECT);
 
 uint32_t actualMillis = 0;
@@ -69,8 +69,8 @@ void loop() {
       S_P = Serial.parseFloat(); //lee un numero flotante, en caso de necesitarse seteos finos
     }
 
-    setPoint1 = S_P; //establecimiento del setPoint
-    //setPoint2 = S_P;
+    //setPoint1 = S_P; //establecimiento del setPoint
+    setPoint2 = S_P;
 
     enc1=analogRead(ENC_1); //lectura del potenciómetro
     enc2=analogRead(ENC_2);
@@ -95,7 +95,7 @@ void loop() {
     scaled2 = map(abs(output2), 0, 255, 0, 65535);
     pwmWrite(OUT_2, scaled2);
 
-    if (encRead2 < setPoint1) {
+    if (encRead1 < setPoint1) {
       digitalWrite(LM298_IN1, LOW);
       digitalWrite(LM298_IN2, HIGH);
     }
