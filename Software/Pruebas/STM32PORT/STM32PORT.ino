@@ -6,8 +6,8 @@
 
 #include <PID_v1.h>
 
-#define PIN_INPUT PA0
-#define PIN_OUTPUT PB8
+#define ENC_1 PA0
+#define OUT_1 PB8
 
 #define ENC_2 PA1
 #define OUT_2 PB9
@@ -19,7 +19,7 @@ int LM298_IN2 = PB13;
 int LM298_IN3 = PB14;
 int LM298_IN4 = PB15;
 int enc1, enc2;
-double Setpoint, grados, enable; //Variables para el PID
+double setPoint1, encRead1, output1; //Variables para el PID
 double setPoint2, encRead2, output2; //Variables para el PID
 uint32_t scaled,scaled2;
 
@@ -29,7 +29,7 @@ double aggKp = 50, aggKi = 0.00, aggKd = 8;
 double consKp = 25, consKi = 0.00, consKd = 3; //consKp=1, consKi=0.00, consKd=0.25;
 
 //Variables del PID y configuración inicial (agresiva)
-PID myPID(&grados, &enable, &Setpoint, consKp, consKi, consKd, DIRECT);
+PID myPID(&encRead2, &output1, &setPoint1, consKp, consKi, consKd, DIRECT);
 PID pid2(&encRead2, &output2, &setPoint2, consKp, consKi, consKd, DIRECT);
 
 uint32_t actualMillis = 0;
@@ -39,8 +39,8 @@ uint32_t prevMillis = 0;
 void setup()
 {
   Serial.begin(115200);
-  pinMode(PIN_INPUT, INPUT_ANALOG);
-  pinMode(PIN_OUTPUT, PWM);
+  pinMode(ENC_1, INPUT_ANALOG);
+  pinMode(OUT_1, PWM);
   pinMode(ENC_2, INPUT_ANALOG);
   pinMode(OUT_2, PWM);
   pinMode(LM298_IN1, OUTPUT);
@@ -55,7 +55,7 @@ void setup()
   pid2.SetOutputLimits(-255,255);
   pid2.SetMode(AUTOMATIC);
 
-  Setpoint=135;
+  setPoint1=135;
   setPoint2=135;  //hardcoding
 }
 
@@ -69,33 +69,33 @@ void loop() {
       S_P = Serial.parseFloat(); //lee un numero flotante, en caso de necesitarse seteos finos
     }
 
-    Setpoint = S_P; //establecimiento del setpoint
+    setPoint1 = S_P; //establecimiento del setPoint
     //setPoint2 = S_P;
 
-    enc1 = analogRead(PIN_INPUT); //lectura del potenciómetro
-    enc2 = analogRead(ENC_2);
-    grados = map(enc1, 0, 4095, 0, 270); //mapeo de la lectura
+    enc1=analogRead(ENC_1); //lectura del potenciómetro
+    enc2=analogRead(ENC_2);
+    encRead1=map(enc1, 0, 4095, 0, 270); //mapeo de la lectura
     encRead2=map(enc2, 0, 4095, 0, 270);
 
 
-    double gap = abs(Setpoint - grados); //
-    if (gap < 10){ //Si está cercano al setpoint se comporta conservador, por lo que va despacio
+    double gap = abs(setPoint1 - encRead2); //
+    if (gap < 10){ //Si está cercano al setPoint se comporta conservador, por lo que va despacio
       myPID.SetTunings(consKp, consKi, consKd);
     }
     else{
-      //si está largo del setpoint se comporta agresivo.
+      //si está largo del setPoint se comporta agresivo.
       myPID.SetTunings(aggKp, aggKi, aggKd);
     }
 
     myPID.Compute();
     pid2.Compute();
 
-    scaled = map(abs(enable), 0, 255, 0, 65535);
-    pwmWrite(PIN_OUTPUT, scaled);
+    scaled = map(abs(output1), 0, 255, 0, 65535);
+    pwmWrite(OUT_1, scaled);
     scaled2 = map(abs(output2), 0, 255, 0, 65535);
     pwmWrite(OUT_2, scaled2);
 
-    if (grados < Setpoint) {
+    if (encRead2 < setPoint1) {
       digitalWrite(LM298_IN1, LOW);
       digitalWrite(LM298_IN2, HIGH);
     }
@@ -113,7 +113,7 @@ void loop() {
       digitalWrite(LM298_IN4, LOW);
     }
 
-    Serial.println(String(scaled) + " : " + String(grados)+"  |  "+String(scaled2) + " : " + String(encRead2));
+    Serial.println(String(scaled) + " : " + String(encRead1)+"  |  "+String(scaled2) + " : " + String(encRead2));
   }
 
 }
