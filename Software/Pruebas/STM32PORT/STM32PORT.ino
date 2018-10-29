@@ -32,13 +32,7 @@ void loop() {
   if ((actualMillis - prevMillis) > PROG_FREQ) {
     prevMillis = actualMillis;
 
-
-    if (Serial.available() > 0) {
-      S_P = Serial.parseFloat(); //lee un numero flotante, en caso de necesitarse seteos finos
-    }
-
-    //setPoint1 = S_P; //establecimiento del setPoint
-    setPoint2 = S_P;
+    serialDecoder();
 
     enc1=analogRead(ENC_1); //lectura del potenciómetro
     enc2=analogRead(ENC_2);
@@ -79,9 +73,49 @@ void loop() {
     
     pwmWrite(OUT_1, abs(output1));
     pwmWrite(OUT_2, abs(output2));
-
-    //Serial.println(String(scaled) + " : " + String(encRead1)+"  |  "+String(scaled2) + " : " + String(encRead2));
-    Serial.println(String(output1) + " : " + String(encRead1)+"  |  "+String(output2) + " : " + String(encRead2));
+    if(serialWatchdog){
+      Serial.println(String(output1) + " : " + String(encRead1)+"  |  "+String(output2) + " : " + String(encRead2));
+    }
   }
-
 }
+
+void serialDecoder(){
+  if (Serial.available() > 0) {
+    if(Serial.peek()=='c'){  //Comando c: Cambiar PID SP1
+      Serial.read();
+      SP1=Serial.parseInt();
+      setPoint1=SP1;
+    }
+    
+    if(Serial.peek()=='v'){ //Comando v: Cambiar PID SP2
+      Serial.read();
+      SP2=Serial.parseInt();
+      setPoint2=SP2;
+    }
+
+    if(Serial.peek()=='p'){ //Comando p: Cambiar PID P
+      Serial.read();
+      consKp=Serial.parseFloat();
+      Serial.println("Nuevo Kp: " +String(consKp));
+    }
+    
+    if(Serial.peek()=='i'){ //Comando i: Cambiar PID I
+      Serial.read();
+      consKi=Serial.parseFloat();
+      Serial.println("Nuevo Ki: " +String(consKi));
+    }
+
+    if(Serial.peek()=='d'){
+      Serial.read();
+      consKd=Serial.parseFloat(); //Comando d: Cambiar PID D
+      Serial.println("Nuevo Kd: " +String(consKd));
+    }
+
+    if(Serial.peek()=='s'){ //Comando s: activa/desactiva debug serial
+      Serial.read();
+      serialWatchdog=Serial.parseInt();
+    }
+  }
+  while(Serial.available() > 0)Serial.read();
+}
+
