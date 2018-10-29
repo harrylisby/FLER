@@ -1,22 +1,19 @@
 class Joystick
 {
   private: //atributos
-//    int boton = 2;
-    int xVal;
-    int yVal;
-    int valBoton;
+
+    byte xVal;
+    byte yVal;
+    byte valBoton;
     
   public: //metodos
-    Joystick(int, int, int, int);
-    void leerX;
-    void leerY;
-    void leerBoton;
-    
+    uint16_t x = 0;
+    uint16_t y = 0;
+    bool b = 0;  
 };
 
 //Constructor: inicializa los atributos
-Joystick::Joystick(int _boton, int _xVal, int _yVal, int _valBoton){
-//    boton = _boton;
+   Joystick(int _xVal, int _yVal, int _valBoton){
     xVal = _xVal;
     yVal = yVal;
     valBoton = _valBoton;
