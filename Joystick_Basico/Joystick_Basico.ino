@@ -7,33 +7,27 @@ class Joystick
     byte valBoton;
     
   public: //metodos
-    uint16_t x = 0;
+    uint16_t x = 0; //entero de 16 bits
     uint16_t y = 0;
-    bool b = 0;  
+    bool b = 0;
 };
 
 //Constructor: inicializa los atributos
-   Joystick(int _xVal, int _yVal, int _valBoton){
-    xVal = _xVal;
-    yVal = yVal;
-    valBoton = _valBoton;
+    Joystick(int a_xVal, int a_yVal, int a_valBoton){
+    xVal = a_xVal;
+    yVal = a_yVal;
+    valBoton = a_valBoton;
+    
+   pinMode(valBoton, INPUT_PULLUP);
 }
 
-void Joystick::leerX(){
-   xVal = analogRead(A0); 
-}
+  Sring readCoor(){
+    x = analogRead(xVal);
+    y = analogRead(yVal);
+    b = digitalRead(valBoton);
+    return("x: "+String(x)+" y: "+String(y)+" b: "+String(b));
+  };
 
-void Joystick::leerY(){
-  yVal = analogRead(A1);
-}
-
-void Joystick::leerBoton(){
-  valBoton = digitalRead(boton);
-}
-
-int main(){
-   
-}
 
 
 
