@@ -1,7 +1,7 @@
-// Analog input pins.
 //Joystick derecho
 const int ejeY = PB0;
 const int ejeX = PB1;
+//Joystick derecho con boton
 const int boton = PB10;
 //Joystick izquierdo
 const int ejeI = PA6;
@@ -11,7 +11,6 @@ uint32_t prevMillis;
 uint32_t actMillis;
 
 void setup() {
-  // Declare analogInputPin as INPUT_ANALOG:
   pinMode(ejeY, INPUT_ANALOG);
   pinMode(ejeX, INPUT_ANALOG);
   pinMode(boton, INPUT_PULLUP);
@@ -28,23 +27,34 @@ void loop() {
     // Read the analog input into a variable:
     int value_ejeY = analogRead(ejeY);
     int value_ejeX = analogRead(ejeX);
+    int value_ejeZ = analogRead(ejeY);
+    int value_ejeG = analogRead(ejeX);
     int value_boton = digitalRead(boton);
     int value_ejeI = analogRead(ejeI);
     int value_ejeR = analogRead(ejeR);
     // print the result:
-    Serial.print("Boton: ");
-    Serial.print(value_boton);
-    Serial.print(" ");
-    Serial.print("X: ");
-    Serial.print(value_ejeX);
-    Serial.print(" ");
-    Serial.print("Y: ");
-    Serial.print(value_ejeY);
+
+    if(value_boton == 1){
+      Serial.print("X: ");
+      Serial.print(value_ejeX);
+      Serial.print(" ");
+      Serial.print("Y: ");
+      Serial.print(value_ejeY);
+    }
+    else{
+      Serial.print("Z: ");
+      Serial.print(value_ejeZ);
+      Serial.print(" ");
+      Serial.print("G: ");
+      Serial.print(value_ejeG);
+    }
+
     Serial.print(" ");
     Serial.print("I: ");
     Serial.print(value_ejeI);
     Serial.print(" ");
     Serial.print("R: ");
-    Serial.println(value_ejeR);
+    Serial.print(value_ejeR);
+    Serial.println();
   }
 }
