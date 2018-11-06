@@ -7,6 +7,14 @@ const int boton = PB10;
 const int ejeI = PA6;
 const int ejeR = PA7;
 
+int value_boton;
+int value_ejeY;
+int value_ejeX;
+int value_ejeZ;
+int value_ejeG;
+int value_ejeI;
+int value_ejeR;
+
 uint32_t prevMillis;
 uint32_t actMillis;
 
@@ -25,30 +33,35 @@ void loop() {
     prevMillis=actMillis;
     //su codigo aqui
     // Read the analog input into a variable:
-    int value_ejeY = analogRead(ejeY);
-    int value_ejeX = analogRead(ejeX);
-    int value_ejeZ = analogRead(ejeY);
-    int value_ejeG = analogRead(ejeX);
-    int value_boton = digitalRead(boton);
-    int value_ejeI = analogRead(ejeI);
-    int value_ejeR = analogRead(ejeR);
+    value_boton = digitalRead(boton);
+    value_ejeI = analogRead(ejeI);
+    value_ejeR = analogRead(ejeR);
     // print the result:
 
     if(value_boton == 1){
-      Serial.print("X: ");
-      Serial.print(value_ejeX);
-      Serial.print(" ");
-      Serial.print("Y: ");
-      Serial.print(value_ejeY);
+      value_ejeY = analogRead(ejeY);
+      value_ejeX = analogRead(ejeX);
+      value_ejeZ = 2047;
+      value_ejeG = 2047;
     }
     else{
-      Serial.print("Z: ");
-      Serial.print(value_ejeZ);
-      Serial.print(" ");
-      Serial.print("G: ");
-      Serial.print(value_ejeG);
+      value_ejeZ = analogRead(ejeY);
+      value_ejeG = analogRead(ejeX);
+      value_ejeY = 2047;
+      value_ejeX = 2047;
     }
 
+    Serial.print("X: ");
+    Serial.print(value_ejeX);
+    Serial.print(" ");
+    Serial.print("Y: ");
+    Serial.print(value_ejeY);
+    Serial.print(" ");
+    Serial.print("Z: ");
+    Serial.print(value_ejeZ);
+    Serial.print(" ");
+    Serial.print("G: ");
+    Serial.print(value_ejeG);
     Serial.print(" ");
     Serial.print("I: ");
     Serial.print(value_ejeI);
