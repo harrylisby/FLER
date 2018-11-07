@@ -71,10 +71,22 @@ void loop() {
     if(abs(output1)<PID_UMBRAL)output1=0;
     if(abs(output2)<PID_UMBRAL)output2=0;
     
-    pwmWrite(OUT_1, abs(output1));
-    pwmWrite(OUT_2, abs(output2));
+    if(!I_ERROR){  //Solo escribe a los pines PWM si no se sobrepasa el límite de corriente
+      pwmWrite(OUT_1, abs(output1));
+      pwmWrite(OUT_2, abs(output2));
+    }
+    
     if(serialWatchdog){
       Serial.println(String(output1) + " : " + String(encRead1)+"  |  "+String(output2) + " : " + String(encRead2));
+    }
+    if(currentProtection){
+      I_READ = I_CAL*analogRead(I_SENSE)-1280;
+      Serial.println("Current: "+String(I_READ));
+      if(I_READ >= MAX_CURRENT){
+        I_ERROR = true;
+        pwmWrite(OUT_1, 0);
+        pwmWrite(OUT_2, 0);
+      }
     }
   }
 }
@@ -111,9 +123,14 @@ void serialDecoder(){
       Serial.println("Nuevo Kd: " +String(consKd));
     }
 
-    if(Serial.peek()=='s'){ //Comando s: activa/desactiva debug serial
+    if(Serial.peek()=='s'){ //Comando s: activa/desactiva debug serial (1)
       Serial.read();
       serialWatchdog=Serial.parseInt();
+    }
+
+    if(Serial.peek()=='q'){ //Comando q: limpiar alarmas (1)
+      Serial.read();
+      I_ERROR=Serial.parseInt();  
     }
   }
   while(Serial.available() > 0)Serial.read();
