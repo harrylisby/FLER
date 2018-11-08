@@ -81,11 +81,12 @@ void loop() {
     }
     if(currentProtection){
       I_READ = I_CAL*analogRead(I_SENSE)-1280;
-      Serial.println("Current: "+String(I_READ));
+      Serial.print("Current: "+String(I_READ));
       if(I_READ >= MAX_CURRENT){
         I_ERROR = true;
         pwmWrite(OUT_1, 0);
         pwmWrite(OUT_2, 0);
+        Serial.println(" E: "+String(I_ERROR));
       }
     }
   }
@@ -117,15 +118,20 @@ void serialDecoder(){
       Serial.println("Nuevo Ki: " +String(consKi));
     }
 
-    if(Serial.peek()=='d'){
+    if(Serial.peek()=='d'){ //Comando d: Cambiar PID D
       Serial.read();
-      consKd=Serial.parseFloat(); //Comando d: Cambiar PID D
+      consKd=Serial.parseFloat(); 
       Serial.println("Nuevo Kd: " +String(consKd));
     }
 
     if(Serial.peek()=='s'){ //Comando s: activa/desactiva debug serial (1)
       Serial.read();
       serialWatchdog=Serial.parseInt();
+    }
+
+    if(Serial.peek()=='z'){ //Comando z: activar prot. corriente (1)
+      Serial.read();
+      currentProtection=Serial.parseInt();  
     }
 
     if(Serial.peek()=='q'){ //Comando q: limpiar alarmas (1)
