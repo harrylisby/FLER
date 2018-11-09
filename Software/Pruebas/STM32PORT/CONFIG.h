@@ -30,9 +30,10 @@ uint32_t scaled,scaled2;
 bool serialWatchdog=false;
 uint16_t PID_UMBRAL=15000;
 uint8_t PROG_FREQ=10;
+bool S_PLOTTER_M = false;
+bool S_PLOTTER_M2 = false;
+uint8_t S_READ_S = 0;
 
 
 //Parámetros para control del PID (agresivo y conservador)
-//double aggKp = 100, aggKi = 0.00, aggKd = 50;
-double consKp = 2400, consKi = 0, consKd = 195;
-//double consKp = 1250, consKi = 0, consKd = 195;
+double consKp = 2300, consKi = 0, consKd = 175;
