@@ -74,7 +74,7 @@ void loop() {
     pwmWrite(OUT_1, abs(output1));
     pwmWrite(OUT_2, abs(output2));
     if(serialWatchdog){
-      Serial.println(String(output1) + " : " + String(encRead1)+"  |  "+String(output2) + " : " + String(encRead2));
+      Serial.println(String(setPoint1) + ":" +String(output1) + " : " + String(encRead1));
     }
   }
 }
