@@ -71,10 +71,30 @@ void loop() {
     if(abs(output1)<PID_UMBRAL)output1=0;
     if(abs(output2)<PID_UMBRAL)output2=0;
     
-    pwmWrite(OUT_1, abs(output1));
-    pwmWrite(OUT_2, abs(output2));
+    if(!I_ERROR){  //Solo escribe a los pines PWM si no se sobrepasa el límite de corriente
+      pwmWrite(OUT_1, abs(output1));
+      pwmWrite(OUT_2, abs(output2));
+    }
+    
     if(serialWatchdog){
       Serial.println(String(setPoint1) + ":" +String(output1) + " : " + String(encRead1));
+    }
+    if(S_PLOTTER_M){
+      Serial.print("Pos: "+String(encRead1));
+      Serial.println("  Out: "+String(map(output1,0,65535,0,500)));      
+    }
+    if(S_PLOTTER_M2){
+      Serial.print("Pos: "+String(encRead2));
+      Serial.println("  Out: "+String(map(output2,0,65535,0,500)));
+    }
+    if(currentProtection){
+      I_READ = I_CAL*analogRead(I_SENSE)-1280;
+      Serial.println("Current: "+String(I_READ));
+      if(I_READ >= MAX_CURRENT){
+        I_ERROR = true;
+        pwmWrite(OUT_1, 0);
+        pwmWrite(OUT_2, 0);
+      }
     }
   }
 }
@@ -111,9 +131,32 @@ void serialDecoder(){
       Serial.println("Nuevo Kd: " +String(consKd));
     }
 
-    if(Serial.peek()=='s'){ //Comando s: activa/desactiva debug serial
+    if(Serial.peek()=='s'){ //Comando s: activa/desactiva debug serial (1)
       Serial.read();
-      serialWatchdog=Serial.parseInt();
+      S_READ_S=Serial.parseInt();
+      //Serial.println(S_READ_S);
+      if(S_READ_S==0){
+        serialWatchdog=0;
+        S_PLOTTER_M=0;
+        S_PLOTTER_M2=0;
+      }else if(S_READ_S==1){
+        serialWatchdog=1;
+        S_PLOTTER_M=0;
+        S_PLOTTER_M2=0;
+      }else if(S_READ_S==2){
+        S_PLOTTER_M=1;
+        serialWatchdog=0;
+        S_PLOTTER_M2=0;
+      }else if(S_READ_S==3){
+        S_PLOTTER_M2=1;
+        serialWatchdog=0;
+        S_PLOTTER_M=0;
+      }
+    }
+
+    if(Serial.peek()=='q'){ //Comando q: limpiar alarmas (1)
+      Serial.read();
+      I_ERROR=Serial.parseInt();  
     }
   }
   while(Serial.available() > 0)Serial.read();
