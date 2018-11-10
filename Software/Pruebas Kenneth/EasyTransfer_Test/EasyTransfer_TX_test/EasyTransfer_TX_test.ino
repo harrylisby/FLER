@@ -1,27 +1,20 @@
 #include <EasyTransfer.h>
 
-
-#define IF1 1
-#define IF2 1
-#define IF3 1
-#define DF1 7
-#define DF2 8
-#define DF3 9
-
-#define IR1 4
-#define IR2 5
-#define IR3 6
-#define DR1 10
-#define DR2 11
-#define DR3 12
-
 int16_t SP_IF1, SP_IF2, SP_IF3, SP_DF1, SP_DF2, SP_DF3, SP_IR1, SP_IR2, SP_IR3, SP_DR1, SP_DR2, SP_DR3;
 
 //create object
 EasyTransfer Front;
 EasyTransfer Rear; 
 
+#define REAR
 
+#ifdef FRONT
+String valorAImprimir = "front";
+#endif
+
+#ifdef REAR
+String valorAImprimir = "rear";
+#endif
 
 //*********************************************************************
 struct SEND_DATA_STRUCTURE{
@@ -60,33 +53,33 @@ void loop(){
   //send the data
   Front.sendData();
   Rear.sendData();
+  serialDecoder();
+
+
+  Serial.println(valorAImprimir);
   
 }
 
 
 void serialDecoder(){
   if (Serial.available() > 0) {
-    if(Serial.peek()=='z'){ 
-      Serial.read();
-      SP_IF1=Serial.parseInt();
-      frontData.SSP_IF1=SP_IF1;
-      Serial.println("Nuevo SP_IF1: "+String(SP_IF1));
-    }
-
-    if(Serial.peek()=='x'){ 
-      Serial.read();
-      SP_IF2=Serial.parseInt();
-      frontData.SSP_IF2=SP_IF2;
-      Serial.println("Nuevo SP_IF2: "+String(SP_IF2));
-    }
-
-    if(Serial.peek()=='c'){ 
-      Serial.read();
-      SP_IF3=Serial.parseInt();
-      frontData.SSP_IF3=SP_IF3;
-      Serial.println("Nuevo SP_IF3: "+String(SP_IF3));
-    }
+    frontData.SSP_IF1=decodePrintData('z',frontData.SSP_IF1);
+    frontData.SSP_IF2=decodePrintData('x',frontData.SSP_IF2);
+    frontData.SSP_IF3=decodePrintData('c',frontData.SSP_IF3);
+    rearData.SSP_IR1=decodePrintData('v',rearData.SSP_IR1);
+    rearData.SSP_IR2=decodePrintData('b',rearData.SSP_IR2);
+    rearData.SSP_IR3=decodePrintData('n',rearData.SSP_IR3);
 
   }
   while(Serial.available() > 0)Serial.read();
+}
+
+uint16_t decodePrintData(char expectedChar,uint16_t currentData){
+  uint16_t readV=currentData;
+  if(Serial.peek()==expectedChar){
+    Serial.read();
+    readV=Serial.parseInt();
+    Serial.println("Nuevo valor: "+String(readV));
+  }
+  return readV;
 }
