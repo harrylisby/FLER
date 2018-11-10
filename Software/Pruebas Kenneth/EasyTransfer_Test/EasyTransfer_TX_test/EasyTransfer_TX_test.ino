@@ -57,11 +57,36 @@ void setup(){
 }
 
 void loop(){
-
   //send the data
   Front.sendData();
   Rear.sendData();
-
-
   
+}
+
+
+void serialDecoder(){
+  if (Serial.available() > 0) {
+    if(Serial.peek()=='z'){ 
+      Serial.read();
+      SP_IF1=Serial.parseInt();
+      frontData.SSP_IF1=SP_IF1;
+      Serial.println("Nuevo SP_IF1: "+String(SP_IF1));
+    }
+
+    if(Serial.peek()=='x'){ 
+      Serial.read();
+      SP_IF2=Serial.parseInt();
+      frontData.SSP_IF2=SP_IF2;
+      Serial.println("Nuevo SP_IF2: "+String(SP_IF2));
+    }
+
+    if(Serial.peek()=='c'){ 
+      Serial.read();
+      SP_IF3=Serial.parseInt();
+      frontData.SSP_IF3=SP_IF3;
+      Serial.println("Nuevo SP_IF3: "+String(SP_IF3));
+    }
+
+  }
+  while(Serial.available() > 0)Serial.read();
 }
