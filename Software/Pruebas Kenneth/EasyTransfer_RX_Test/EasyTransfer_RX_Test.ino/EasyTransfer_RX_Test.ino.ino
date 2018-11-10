@@ -21,25 +21,25 @@ EasyTransfer Front;
 EasyTransfer Rear; 
 
 //*********************************************************************
-struct SEND_DATA_STRUCTURE{
+struct RECEIVED_DATA_STRUCTURE{
 
   int16_t SSP_IF1, SSP_IF2, SSP_IF3, SSP_DF1, SSP_DF2, SSP_DF3;
   
 };
 
 //give a name to the group of data
-SEND_DATA_STRUCTURE frontData;
+RECEIVED_DATA_STRUCTURE frontData;
 //*********************************************************************
 
 
 //*********************************************************************
-struct SEND_DATA_STRUCTURE_2{
+struct RECEIVED_DATA_STRUCTURE_2{
 
   int16_t SSP_IR1, SSP_IR2, SSP_IR3, SSP_DR1, SSP_DR2, SSP_DR3;
   
 };
 
-SEND_DATA_STRUCTURE_2 rearData;
+RECEIVED_DATA_STRUCTURE_2 rearData;
 //*********************************************************************
 void setup(){
   Serial.begin(115200);
@@ -54,8 +54,20 @@ void setup(){
 
 void loop(){
   //send the data
-
   Front.sendData();
   Rear.sendData();
-  
 }
+
+void serialDecoder (){
+
+if(Serial.available() > 0){
+    
+  SP_IF1 = frontData.SSP_IF1;
+  SP_IF2 = frontData.SSP_IF2;
+  SP_IF3 = frontData.SSP_IF3;
+        
+  Serial.println("Nuevo SP_IF1: "+String(SP_IF1)+"Nuevo SP_IF2: "+String(SP_IF2)+"Nuevo SP_IF3: "+String(SP_IF3));   
+      }
+ 
+  }
+
