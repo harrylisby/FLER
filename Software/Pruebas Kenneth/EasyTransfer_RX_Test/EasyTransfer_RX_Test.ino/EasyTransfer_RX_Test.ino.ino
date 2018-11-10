@@ -54,20 +54,23 @@ void setup(){
 
 void loop(){
   //send the data
-  Front.sendData();
-  Rear.sendData();
+  Front.receiveData();
+  Rear.receiveData();
+  
+  serialDecoder ();
 }
 
-void serialDecoder (){
 
-if(Serial.available() > 0){
-    
+void serialDecoder (){
+   
   SP_IF1 = frontData.SSP_IF1;
   SP_IF2 = frontData.SSP_IF2;
   SP_IF3 = frontData.SSP_IF3;
+  SP_IR1 = rearData.SSP_IR1;
+  SP_IR2 = rearData.SSP_IR2;
+  SP_IR3 = rearData.SSP_IR3;
         
-  Serial.println("Nuevo SP_IF1: "+String(SP_IF1)+"Nuevo SP_IF2: "+String(SP_IF2)+"Nuevo SP_IF3: "+String(SP_IF3));   
+  Serial.println("SP_IF1: " + String(SP_IF1)+ " SP_IF2: " + String(SP_IF2)+ " SP_IF3: " + String(SP_IF3) + " SP_IR1: " + String(SP_IR1)+ " SP_IR2: " + String(SP_IR2)+ " SP_IR3: " + String(SP_IR3));   
       }
  
-  }
 
