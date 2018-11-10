@@ -1,6 +1,21 @@
 #include <EasyTransfer.h>
 
 
+#define IF1 1
+#define IF2 1
+#define IF3 1
+#define DF1 7
+#define DF2 8
+#define DF3 9
+
+#define IR1 4
+#define IR2 5
+#define IR3 6
+#define DR1 10
+#define DR2 11
+#define DR3 12
+
+int16_t SP_IF1, SP_IF2, SP_IF3, SP_DF1, SP_DF2, SP_DF3, SP_IR1, SP_IR2, SP_IR3, SP_DR1, SP_DR2, SP_DR3;
 
 //create object
 EasyTransfer Front;
@@ -11,7 +26,7 @@ EasyTransfer Rear;
 //*********************************************************************
 struct SEND_DATA_STRUCTURE{
 
-  
+  int16_t SP_IF1, SP_IF2, SP_IF3, SP_DF1, SP_DF2, SP_DF3;
   
 };
 
@@ -23,7 +38,7 @@ SEND_DATA_STRUCTURE frontData;
 //*********************************************************************
 struct SEND_DATA_STRUCTURE_2{
 
-
+  int16_t SP_IR1, SP_IR2, SP_IR3, SP_DR1, SP_DR2, SP_DR3;
   
 };
 
