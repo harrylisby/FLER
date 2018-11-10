@@ -14,6 +14,8 @@ double I_READ = 0;
 double I_CAL = (3300*2)/4096;
 double MAX_CURRENT = 1.50;
 
+bool POS_ERROR = false;
+
 uint32_t actualMillis = 0;
 uint32_t prevMillis = 0;
 uint16_t SP1=135;  //Recibe la lectura del puerto serie
@@ -26,9 +28,12 @@ int enc1, enc2;
 double setPoint1, encRead1, output1; //Variables para el PID
 double setPoint2, encRead2, output2; //Variables para el PID
 uint32_t scaled,scaled2;
+uint16_t prevPos1=SP1,prevPos2=SP2;
+
+bool wrongDirDetect=false;
 
 bool serialWatchdog=false;
-uint16_t PID_UMBRAL=15000;
+uint16_t PID_UMBRAL=12500;
 uint8_t PROG_FREQ=10;
 bool S_PLOTTER_M = false;
 bool S_PLOTTER_M2 = false;
