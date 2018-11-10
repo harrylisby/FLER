@@ -55,6 +55,7 @@ void loop() {
       digitalWrite(LM298_IN2, LOW);
     }
 
+    
     if (encRead2 < setPoint2) {
       digitalWrite(LM298_IN3, LOW);
       delay(1);
@@ -68,10 +69,56 @@ void loop() {
       digitalWrite(LM298_IN4, LOW);
     }
 
+    if(wrongDirDetect){
+      if(setPoint1>prevPos1){
+        if(prevPos1>encRead1){
+          POS_ERROR=true;
+          pwmWrite(OUT_1, 0);
+          pwmWrite(OUT_2, 0);
+        }
+      }else if(setPoint1<prevPos1){
+        if(prevPos1<encRead1){
+          POS_ERROR=true;
+          pwmWrite(OUT_1, 0);
+          pwmWrite(OUT_2, 0);
+        }
+      }
+      if(POS_ERROR){
+        serialWatchdog=false;
+        S_PLOTTER_M=false;
+        S_PLOTTER_M2=false;
+        Serial.println("POS_ERROR: DIRECCIÓN INCORRECTA");
+      }
+    }
+
+    if(wrongDirDetect){
+      if(setPoint2>prevPos2){
+        if(prevPos2>encRead2){
+          POS_ERROR=true;
+          pwmWrite(OUT_1, 0);
+          pwmWrite(OUT_2, 0);
+        }
+      }else if(setPoint2<prevPos2){
+        if(prevPos2<encRead2){
+          POS_ERROR=true;
+          pwmWrite(OUT_1, 0);
+          pwmWrite(OUT_2, 0);
+        }
+      }
+      if(POS_ERROR){
+        serialWatchdog=false;
+        S_PLOTTER_M=false;
+        S_PLOTTER_M2=false;
+        Serial.println("POS_ERROR: DIRECCIÓN INCORRECTA");
+      }
+    }
+
+    
+
     if(abs(output1)<PID_UMBRAL)output1=0;
     if(abs(output2)<PID_UMBRAL)output2=0;
     
-    if(!I_ERROR){  //Solo escribe a los pines PWM si no se sobrepasa el límite de corriente
+    if(!I_ERROR&&!POS_ERROR){  //Solo escribe a los pines PWM si no hay error
       pwmWrite(OUT_1, abs(output1));
       pwmWrite(OUT_2, abs(output2));
     }
@@ -105,12 +152,14 @@ void serialDecoder(){
       Serial.read();
       SP1=Serial.parseInt();
       setPoint1=SP1;
+      prevPos1=encRead1;
     }
     
     if(Serial.peek()=='v'){ //Comando v: Cambiar PID SP2
       Serial.read();
       SP2=Serial.parseInt();
       setPoint2=SP2;
+      prevPos2=encRead2;
     }
 
     if(Serial.peek()=='p'){ //Comando p: Cambiar PID P
@@ -156,7 +205,15 @@ void serialDecoder(){
 
     if(Serial.peek()=='q'){ //Comando q: limpiar alarmas (1)
       Serial.read();
-      I_ERROR=Serial.parseInt();  
+      bool errorDetect=Serial.parseInt();
+      I_ERROR=errorDetect;
+      POS_ERROR=errorDetect; 
+    }
+
+    if(Serial.peek()=='l'){
+      Serial.read();
+      wrongDirDetect=Serial.parseInt();
+      Serial.println("Protección de dirección");
     }
   }
   while(Serial.available() > 0)Serial.read();
