@@ -3,8 +3,8 @@
 
 Adafruit_ADS1115 ads(0x48);
 
-int16_t adc2;
-int16_t adc3;
+int16_t adcY;
+int16_t adcX;
 int16_t adcZ;
 int16_t adcG;
 
@@ -31,13 +31,13 @@ void loop() {
     // Read the analog input into a variable:
     value_boton = digitalRead(boton);
     //Se lee el valor del eje I y R
-    int16_t adc0=ads.readADC_SingleEnded(0);
-    int16_t adc1=ads.readADC_SingleEnded(1);
+    int16_t adcI=ads.readADC_SingleEnded(0);
+    int16_t adcR=ads.readADC_SingleEnded(1);
     
     if(value_boton == 1){
       //Leer eje Y y X
-      adc2=ads.readADC_SingleEnded(2);
-      adc3=ads.readADC_SingleEnded(3);
+      adcY=ads.readADC_SingleEnded(2);
+      adcX=ads.readADC_SingleEnded(3);
       adcZ = 13150;
       adcG = 13150;
     }
@@ -45,15 +45,15 @@ void loop() {
       //Leer eje Z y G
       adcZ=ads.readADC_SingleEnded(2);
       adcG=ads.readADC_SingleEnded(3);
-      adc2 = 13150;
-      adc3 = 13150;
+      adcY = 13150;
+      adcX = 13150;
     }
 
     Serial.print("X: ");
-    Serial.print(adc3);
+    Serial.print(adcX);
     Serial.print(" ");
     Serial.print("Y: ");
-    Serial.print(adc2);
+    Serial.print(adcY);
     Serial.print(" ");
     Serial.print("Z: ");
     Serial.print(adcZ);
@@ -62,10 +62,10 @@ void loop() {
     Serial.print(adcG);
     Serial.print(" ");
     Serial.print("I: ");
-    Serial.print(adc0);
+    Serial.print(adcI);
     Serial.print(" ");
     Serial.print("R: ");
-    Serial.print(adc1);
+    Serial.print(adcR);
     Serial.println();
   }
 }
