@@ -1,3 +1,4 @@
+//Codigo para Conectar el ESP8266 a Internet con los dos sensores  
 #include <DHT.h>
 #include <DHT_U.h>
 #include "Wire.h"
