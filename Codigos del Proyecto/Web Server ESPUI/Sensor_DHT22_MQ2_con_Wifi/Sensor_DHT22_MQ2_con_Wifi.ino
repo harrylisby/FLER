@@ -85,7 +85,7 @@ void setup(){
   ESPUI.pad("Controlador", true, &padExample, COLOR_WETASPHALT);
   //ESPUI.pad("Controlador2", false, &padExample, COLOR_WETASPHALT);
   
-  ESPUI.begin("ESPUI Control");
+  ESPUI.begin("FLER: Interfaz Web");
 }
 
 
