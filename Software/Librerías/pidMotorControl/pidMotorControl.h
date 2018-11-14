@@ -6,8 +6,7 @@
 
 class pidControl{
 public:
-	pidControl(void);
-	pidControl(uint16_t,uint16_t,uint16_t ,float ,float ,float );
+	pidControl(uint16_t,uint16_t,uint16_t ,float ,float ,float);
 	PID workPID;
 
 private:

@@ -6,9 +6,7 @@
 
 #include "pidMotorControl.h"
 
-pidControl::pidControl():workPID(){}
-
-pidControl::pidControl(uint16_t encRead,uint16_t output,uint16_t setPoint,float kp,float kd,float ki) : workPID(&encRead,&output,&setPoint,kp,ki,kd,DIRECT) {
+pidControl::pidControl(double encRead,double output,double setPoint,double kp,double kd,double ki) : workPID(&encRead,&output,&setPoint,kp,ki,kd,DIRECT) {
 	Serial.println("Instance Started");
 	_encRead=encRead;
 	_output=output;
