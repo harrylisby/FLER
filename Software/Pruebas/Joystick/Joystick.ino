@@ -7,6 +7,8 @@ int16_t adcY;
 int16_t adcX;
 int16_t adcZ;
 int16_t adcG;
+int16_t adcI;
+int16_t adcR;
 
 //Joystick derecho con boton
 const int boton = 0;
@@ -31,8 +33,8 @@ void loop() {
     // Read the analog input into a variable:
     value_boton = digitalRead(boton);
     //Se lee el valor del eje I y R
-    int16_t adcI=ads.readADC_SingleEnded(0);
-    int16_t adcR=ads.readADC_SingleEnded(1);
+    adcI=ads.readADC_SingleEnded(0);
+    adcR=ads.readADC_SingleEnded(1);
     
     if(value_boton == 1){
       //Leer eje Y y X
