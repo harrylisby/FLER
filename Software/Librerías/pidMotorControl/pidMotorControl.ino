@@ -1,8 +1,8 @@
 #include "pidMotorControl.h" 
 
-uint16_t encRead_=0;
-uint16_t output_=0;
-uint16_t setPoint_=0;
+double encRead_=0;
+double output_=0;
+double setPoint_=0;
 float kp_=1;
 float ki_=0;
 float kd_=0;
