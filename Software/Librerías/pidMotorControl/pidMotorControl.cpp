@@ -19,6 +19,23 @@ pidControl::pidControl(double encRead,double output,double setPoint,double kp,do
 	Serial.println("Instance Started");
   }
 
-//pidControl::workPID(&_encRead,&_output,&_setPoint,_kp,_ki,_kd,DIRECT);
+void pidControl::controllerBegin(int encoderInput, int pwmOutput, int fwdOutput, int revOutput){
+	ENCODER = encoderInput;
+	PWM_OUTPUT = pwmOutput;
+	FWD_OUTPUT = fwdOutput;
+	REV_OUTPUT = revOutput;
 
-	
+	pinMode(ENCODER, INPUT_ANALOG);
+	pinMode(PWM_OUTPUT, PWM);
+	pinMode(FWD_OUTPUT,OUTPUT);
+	pinMode(REV_OUTPUT,OUTPUT);
+
+}
+
+void pidControl::goTo(uint16_t goToPosition){
+
+}
+
+void pidControl::run(){
+
+}
