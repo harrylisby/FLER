@@ -4,7 +4,7 @@ class Joystick {
     uint16_t readY();
     uint16_t readX();
     uint16_t readYB();
-    uint16_t readYX();
+    uint16_t readXB();
     uint8_t dir;
     Adafruit_ADS1115 ads; 
   private:
