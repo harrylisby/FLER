@@ -6,9 +6,10 @@
 
 class pidControl{
 public:
-	pidControl(double,double,double ,double ,double ,double);
+	pidControl(double,double,double,double,double,double);
 	PID workPID;
-	void controllerBegin(int, int, int, int);
+	void controllerBegin(int, int, int, int, double, double, double);
+	void softwareLimits(uint16_t, uint16_t);
 	void goTo(uint16_t);
 	void run();
 
@@ -29,7 +30,9 @@ private:
 	uint16_t m_setPoint;
 	uint16_t currentPos;
 	double minOut, maxOut;
+	double _PID_THRESHOLD;
 
-	
+	uint16_t _maxPos;
+	uint16_t _minPos;
 };
 #endif
