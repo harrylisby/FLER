@@ -29,7 +29,7 @@ void loop() {
   c3A = c1A + c2A;
   c3B = c1B + c2B;
   angulo4A = (acos(c4A/c3A)*180)/PI;
-  angulo4B = 45 + (45 - (acos(c4B/c3B)*180)/PI);
+  angulo4B = 15 + (10 - (acos(c4B/c3B)*180)/PI);
 
   Serial.print("Ángulo 1A: ");
   Serial.print(angulo1A);
