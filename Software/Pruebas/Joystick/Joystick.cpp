@@ -6,27 +6,30 @@ Joystick::Joystick(int boton, int adc1, int adc2, uint8_t adsDir):ads(dir){
   _boton = boton;
   _adc1 = adc1;
   _adc2 = adc2;
+  _adsDir = dir;
 }
 
-Joystick::readY(){
-    value_boton = digitalRead(boton);
-    if (value_boton == 1){
+uint16_t Joystick::readY(){
+    _value_boton = digitalRead(boton);
+    if (_value_boton == 1){
       _adcY=ads.readADC_SingleEnded(adc1);
     }
     else{
       _adcY = 13150;
     }
+    return _adcY;
 }
-Joystick::readX(){
-    value_boton = digitalRead(boton);
-    if (value_boton == 1){
+uint16_t Joystick::readX(){
+    _value_boton = digitalRead(boton);
+    if (_value_boton == 1){
       _adcX=ads.readADC_SingleEnded(adc2);
     }
     else{
       _adcX = 13150;
     }
+    return _adcX;
 }
-Joystick::readYB(){
+uint16_t Joystick::readYB(){
     value_boton = digitalRead(boton);
     if (value_boton == 0){
       _adcYB=ads.readADC_SingleEnded(adc1);
@@ -34,8 +37,9 @@ Joystick::readYB(){
     else{
       _adcYB = 13150;
     }
+    return _adcYB;
 }
-Joystick::readXB(){
+uint16_t Joystick::readXB(){
     value_boton = digitalRead(boton);
     if (value_boton == 0){
       _adcXB=ads.readADC_SingleEnded(adc2);
@@ -43,5 +47,6 @@ Joystick::readXB(){
     else{
       _adcXB = 13150;
     }
+    return _adcXB;
 }
 
