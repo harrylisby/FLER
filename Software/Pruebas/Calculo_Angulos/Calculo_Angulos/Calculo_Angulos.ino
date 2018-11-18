@@ -22,14 +22,14 @@ void setup() {
 }
 
 void loop() {
-  angulo1A = acos(c1A/p1);
-  angulo1B = acos(c1B/p1);
-  angulo2A = acos(c2A/p2);
-  angulo2B = acos(c2B/p2);
+  angulo1A = (acos(c1A/p1)*180)/PI;
+  angulo1B = (acos(c1B/p1)*180)/PI;
+  angulo2A = (acos(c2A/p2)*180)/PI;
+  angulo2B = (acos(c2B/p2)*180)/PI;
   c3A = c1A + c2A;
   c3B = c1B + c2B;
-  angulo4A = acos(c4A/c3A);
-  angulo4B = acos(c4B/c3B);
+  angulo4A = (acos(c4A/c3A)*180)/PI;
+  angulo4B = (acos(c4B/c3B)*180)/PI;
 
   Serial.print("Ángulo 1A: ");
   Serial.print(angulo1A);
