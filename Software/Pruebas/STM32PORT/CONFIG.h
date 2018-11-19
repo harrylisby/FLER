@@ -39,6 +39,4 @@ bool S_PLOTTER_M = false;
 bool S_PLOTTER_M2 = false;
 uint8_t S_READ_S = 0;
 
-
-//Parámetros para control del PID (agresivo y conservador)
 double consKp = 2300, consKi = 0, consKd = 175;

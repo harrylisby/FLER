@@ -6,7 +6,7 @@
 
 class pidControl{
 public:
-	pidControl(double,double,double,double,double,double);
+	pidControl(double*,double*,double*,double,double,double);
 	PID workPID;
 	void controllerBegin(int, int, int, int, double, double, double);
 	void softwareLimits(uint16_t, uint16_t);

@@ -7,16 +7,17 @@
 #include "pidMotorControl.h"
 
 
-pidControl::pidControl(double encRead,double output,double setPoint,double kp,double kd,double ki)  
-  : workPID(&encRead,&output,&setPoint,kp,ki,kd,DIRECT),
-    _encRead(encRead),
-    _output(output),
-    _setPoint(setPoint),
-    _kp(kp),
-    _kd(kd),
-    _ki(ki)
-    {
-	Serial.println("Instance Started");
+pidControl::pidControl(double* encRead,double* output,double* setPoint,double kp,double kd,double ki)  
+  : workPID(&_encRead,&_output,&_setPoint,kp,ki,kd,DIRECT) {
+	_encRead=*encRead;
+   _output=*output;
+   _setPoint=*setPoint;
+   _kp=kp;
+   _kd=kd;
+   _ki=ki;
+
+   //Serial.begin(115200);
+	//Serial.println("Instance Started");
   }
 
 void pidControl::softwareLimits(uint16_t minPos=0, uint16_t maxPos=4096){
