@@ -9,9 +9,12 @@ public:
 	pidControl(double*,double*,double*,double,double,double);
 	PID workPID;
 	void controllerBegin(int, int, int, int, double, double, double);
-	void softwareLimits(uint16_t, uint16_t);
-	void goTo(uint16_t);
+	void softwareLimits(double, double);
+	void goTo(double);
 	void run();
+	double getEncoder();
+	double getSetpoint();
+	double getOutput();
 
 
 private:
@@ -27,12 +30,13 @@ private:
 	int PWM_OUTPUT;
 	int FWD_OUTPUT;
 	int REV_OUTPUT;
-	uint16_t m_setPoint;
-	uint16_t currentPos;
+	double m_setPoint;
+	double currentPos;
 	double minOut, maxOut;
 	double _PID_THRESHOLD;
+	double _encoderRead;
 
-	uint16_t _maxPos;
-	uint16_t _minPos;
+	double _maxPos;
+	double _minPos;
 };
 #endif
