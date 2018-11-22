@@ -16,11 +16,9 @@ pidControl::pidControl(double* encRead,double* output,double* setPoint,double kp
    _kd=kd;
    _ki=ki;
 
-   //Serial.begin(115200);
-	//Serial.println("Instance Started");
   }
 
-void pidControl::softwareLimits(uint16_t minPos=0, uint16_t maxPos=4096){
+void pidControl::softwareLimits(int16_t minPos=0, int16_t maxPos=4096){
 	_minPos = minPos;
 	_maxPos = maxPos;
 }
@@ -44,14 +42,27 @@ void pidControl::controllerBegin(int encoderInput, int pwmOutput, int fwdOutput,
 	pidControl::workPID.SetMode(AUTOMATIC);
 }
 
-void pidControl::goTo(uint16_t goToPosition){ 
+void pidControl::goTo(int16_t goToPosition){ 
 	_setPoint=goToPosition;
+}
+
+bool pidControl::checkWrongDirection(){
+  if(_setPoint>encoderRead){
+    
+
+
+  }else if(_setPoint<encoderRead){
+
+
+  }
+  lastPosition = encoderRead;
+  return errorAlarm;
 }
 
 void pidControl::run(){
 	pidControl::workPID.Compute();
 
-	uint16_t encoderRead = analogRead(ENCODER);
+	int16_t encoderRead = analogRead(ENCODER);
 	bool noErrorWrite = false;
 
 	if((encoderRead>_maxPos)){ //Mejorar para que retorne al punto máximo

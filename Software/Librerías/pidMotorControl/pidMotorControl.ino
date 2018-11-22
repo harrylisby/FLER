@@ -121,8 +121,6 @@ void setup(){
 }
 
 void loop(){
-	IF1.goTo(15);
-	IF1.run();
 
 #ifdef FRONT
 	//send the data
@@ -150,4 +148,14 @@ void loop(){
 
 	/*Serial.println("SP_IR1: " + String(SP_IR1)+ " SP_IR2: " + String(SP_IR2)+ " SP_IR3: " + String(SP_IR3) + " SP_DR1: " + String(SP_DR1)+ " SP_DR2: " + String(SP_DR2)+ " SP_DR3: " + String(SP_DR3));*/ 
 #endif
+
+	IF1.run();
+	IF2.run();
+	IF3.run();
+	DF1.run();
+	DF2.run();
+	DF3.run();
+
+	//why are U runnin?
+
 }

@@ -9,8 +9,9 @@ public:
 	pidControl(double*,double*,double*,double,double,double);
 	PID workPID;
 	void controllerBegin(int, int, int, int, double, double, double);
-	void softwareLimits(uint16_t, uint16_t);
-	void goTo(uint16_t);
+	void softwareLimits(int16_t, int16_t);
+	void goTo(int16_t);
+	bool checkWrongDirection();
 	void run();
 
 
@@ -27,12 +28,14 @@ private:
 	int PWM_OUTPUT;
 	int FWD_OUTPUT;
 	int REV_OUTPUT;
-	uint16_t m_setPoint;
-	uint16_t currentPos;
+	int16_t m_setPoint;
+	int16_t currentPos;
 	double minOut, maxOut;
 	double _PID_THRESHOLD;
+	bool direction; //true = fwd, false = rev
+	int16_t _lastPosition;
 
-	uint16_t _maxPos;
-	uint16_t _minPos;
+	int16_t _maxPos;
+	int16_t _minPos;
 };
 #endif
