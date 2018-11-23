@@ -48,11 +48,25 @@ void pidControl::goTo(double goToPosition){
 	_setPoint=goToPosition;
 }
 
-void pidControl::run(){
+bool pidControl::checkWrongDirection(){
+	if(oneTime1){
+		oneTime1=false;
+		_encRead = analogRead(ENCODER);
+		_lastPosition = _encRead;
+	}else{
+		if(_setPoint>_encRead){
+		if((_lastPosition-_encRead)>100)return true; 
+		}else if(_setPoint<_encRead){
+			if((_lastPosition-_encRead)>-100)return true;
+		}
+	}
+  return false;
+}
+
+void pidControl::run(bool enableAlarm = false){
 	pidControl::workPID.Compute();
 
 	_encRead = analogRead(ENCODER);
-	bool noErrorWrite = false;
 
 	if((_encRead>_maxPos)){ //Mejorar para que retorne al punto máximo
 		//bool noErrorWrite=true;
@@ -77,7 +91,13 @@ void pidControl::run(){
 
 	if(abs(_output)<_PID_THRESHOLD || abs(_output)<_PID_THRESHOLD)_output=0;
 
-	pwmWrite(PWM_OUTPUT,_output);
+	pwmWrite(PWM_OUTPUT,abs(_output));
+	if(!enableAlarm){
+	}/*else{
+		if(checkWrongDirection()){
+			pwmWrite(PWM_OUTPUT,0);
+		}
+	}*/
 }
 
 double pidControl::getEncoder(){

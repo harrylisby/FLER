@@ -11,10 +11,11 @@ public:
 	void controllerBegin(int, int, int, int, double, double, double);
 	void softwareLimits(double, double);
 	void goTo(double);
-	void run();
+	void run(bool);
 	double getEncoder();
 	double getSetpoint();
 	double getOutput();
+	bool checkWrongDirection();
 
 
 private:
@@ -35,6 +36,9 @@ private:
 	double minOut, maxOut;
 	double _PID_THRESHOLD;
 	double _encoderRead;
+	bool direction; //true = fwd, false = rev
+	double _lastPosition;
+	bool oneTime1=true;
 
 	double _maxPos;
 	double _minPos;
