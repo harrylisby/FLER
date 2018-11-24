@@ -3,11 +3,13 @@
 #define LIBRARY_VERSION 1.0.0
 
 #include <PID_v1.h>
+#include "Adafruit_MCP23008.h"
 
 class pidControl{
 public:
 	pidControl(double*,double*,double*,double,double,double);
 	PID workPID;
+	Adafruit_MCP23008 exp_io;
 	void controllerBegin(int, int, int, int, double, double, double);
 	void softwareLimits(double, double);
 	void goTo(double);

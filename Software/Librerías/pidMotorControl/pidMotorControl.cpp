@@ -8,7 +8,7 @@
 
 
 pidControl::pidControl(double* encRead,double* output,double* setPoint,double kp,double kd,double ki)  
-  : workPID(&_encRead,&_output,&_setPoint,kp,ki,kd,DIRECT) {
+  : workPID(&_encRead,&_output,&_setPoint,kp,ki,kd,DIRECT) , exp_io() {
 	_encRead=*encRead;
    _output=*output;
    _setPoint=*setPoint;
@@ -89,15 +89,9 @@ void pidControl::run(bool enableAlarm = false){
 		digitalWrite(FWD_OUTPUT,HIGH);
 	}
 
-	if(abs(_output)<_PID_THRESHOLD || abs(_output)<_PID_THRESHOLD)_output=0;
+	//if(abs(_output)<_PID_THRESHOLD || abs(_output)<_PID_THRESHOLD)_output=0;
 
 	pwmWrite(PWM_OUTPUT,abs(_output));
-	if(!enableAlarm){
-	}/*else{
-		if(checkWrongDirection()){
-			pwmWrite(PWM_OUTPUT,0);
-		}
-	}*/
 }
 
 double pidControl::getEncoder(){

@@ -2,6 +2,7 @@
 #include <EasyTransfer.h>
 
 uint32_t lastCycle, currentTime;
+bool alternar=true;
 
 #define FRONT
 
@@ -43,33 +44,33 @@ RECEIVED_DATA_STRUCTURE_2 rearData;
 
 //IF2 IO
 #define IF2_ENC PA1
-#define IF2_PWM PB6
+#define IF2_PWM PA7
 #define IF2_FWD PB5
 #define IF2_REV PB4
 
 //IF3 IO
-#define IF3_ENC PA2
-#define IF3_PWM PB3
-#define IF3_FWD PA15
-#define IF3_REV PA12
+#define IF3_ENC PA4
+#define IF3_PWM PA9
+#define IF3_FWD PA8
+#define IF3_REV PB15
 
 //DF1 IO
-#define DF1_ENC PA3
-#define DF1_PWM PA12
-#define DF1_FWD PA11
-#define DF1_REV PA10
+#define DF1_ENC PB1
+#define DF1_PWM PA7
+#define DF1_FWD PA6
+#define DF1_REV PC13
 
 //DF2 IO
-#define DF2_ENC PA4
-#define DF2_PWM PA9
-#define DF2_FWD PA8
-#define DF2_REV PB15
+#define DF2_ENC PB0
+#define DF2_PWM PB3
+#define DF2_FWD 0
+#define DF2_REV PB9
 
 //DF3 IO
 #define DF3_ENC PA5
 #define DF3_PWM PB14
 #define DF3_FWD PB13
-#define DF3_REV PB7
+#define DF3_REV PB11
 
 
 //Parámetros de PID
@@ -92,8 +93,27 @@ pidControl DF3(&DF3_ENCREAD,&DF3_OUT,&frontData.SSP_DF3,FKP,FKI,FKD);
 
 
 void setup(){
-	Serial.begin(115200);
+	Serial.begin(9600);
   Serial2.begin(9600);
+
+  // exp_io.begin();
+
+  // exp_io.pinMode(0, OUTPUT);
+  // exp_io.pinMode(1, OUTPUT);
+  // exp_io.pinMode(2, OUTPUT);
+  // exp_io.pinMode(3, OUTPUT);
+  // exp_io.pinMode(4, OUTPUT);
+  // exp_io.pinMode(5, OUTPUT);
+  // exp_io.pinMode(6, OUTPUT);
+  // exp_io.pinMode(7, OUTPUT);
+
+
+#ifdef FRONT  
+    Front.begin(details(frontData), &Serial2); //comunicación frontal
+#endif
+#ifdef REAR
+    Rear.begin(details(rearData), &Serial2); //comunicación trasera
+#endif
 
   //EJEMPLO:
 	//IF1.softwareLimits(250,3750);
@@ -125,20 +145,21 @@ void loop(){
   uint32_t cycleBegin = micros();
 
   currentTime=millis();
-  if((currentTime-lastCycle)>10){
+  if((currentTime-lastCycle)>1000){
+
     IF1.run(false);
     IF2.run(false);
-    //IF3.run(false);
+    IF3.run(false);
     //DF1.run(false);
     //DF2.run(false);
     //DF3.run(false);
     //Serial.println(String(IF1.getEncoder())+"  "+String(IF1.getSetpoint())+"  "+String(IF1.getOutput())+"   "+String(IF1.checkWrongDirection()));
 
     //serialDecoder();
-    lastCycle=currentTime;
 
     uint32_t cycleEnd = micros();
     Serial.println((cycleEnd-cycleBegin));
+    lastCycle=currentTime;
   }	
 }
 
