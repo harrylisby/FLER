@@ -9,10 +9,13 @@ public:
 	pidControl(double*,double*,double*,double,double,double);
 	PID workPID;
 	void controllerBegin(int, int, int, int, double, double, double);
-	void softwareLimits(int16_t, int16_t);
-	void goTo(int16_t);
+	void softwareLimits(double, double);
+	void goTo(double);
+	void run(bool);
+	double getEncoder();
+	double getSetpoint();
+	double getOutput();
 	bool checkWrongDirection();
-	void run();
 
 
 private:
@@ -28,14 +31,16 @@ private:
 	int PWM_OUTPUT;
 	int FWD_OUTPUT;
 	int REV_OUTPUT;
-	int16_t m_setPoint;
-	int16_t currentPos;
+	double m_setPoint;
+	double currentPos;
 	double minOut, maxOut;
 	double _PID_THRESHOLD;
+	double _encoderRead;
 	bool direction; //true = fwd, false = rev
-	int16_t _lastPosition;
+	double _lastPosition;
+	bool oneTime1=true;
 
-	int16_t _maxPos;
-	int16_t _minPos;
+	double _maxPos;
+	double _minPos;
 };
 #endif

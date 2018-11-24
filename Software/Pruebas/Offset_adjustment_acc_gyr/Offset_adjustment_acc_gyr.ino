@@ -13,7 +13,7 @@ int giro_deadzone=1;     //Giro error allowed, make it lower to get more precisi
 // AD0 low = 0x68 (default for InvenSense evaluation board)
 // AD0 high = 0x69
 //MPU6050 accelgyro;
-MPU6050 accelgyro; // <-- use for AD0 high
+MPU6050 accelgyro(0x68); // <-- use for AD0 high
  
 int16_t ax, ay, az,gx, gy, gz;
  
@@ -25,7 +25,7 @@ void setup() {
   // join I2C bus (I2Cdev library doesn't do this automatically)
   Wire.begin();
   // COMMENT NEXT LINE IF YOU ARE USING ARDUINO DUE
-  //TWBR = 24; // 400kHz I2C clock (200kHz if CPU is 8MHz). Leonardo measured 250kHz.
+  TWBR = 24; // 400kHz I2C clock (200kHz if CPU is 8MHz). Leonardo measured 250kHz.
  
   // initialize serial communication
   Serial.begin(115200);
@@ -64,14 +64,14 @@ void loop() {
     Serial.println("\nReading sensors for first time...");
     meansensors();
     state++;
-    delay(500);
+    delay(1000);
   }
  
   if (state==1) {
     Serial.println("\nCalculating offsets...");
     calibration();
     state++;
-    delay(500);
+    delay(1000);
   }
  
   if (state==2) {
@@ -178,5 +178,4 @@ void calibration(){
  
     if (ready==6) break;
   }
-}
 

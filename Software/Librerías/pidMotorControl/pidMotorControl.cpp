@@ -16,9 +16,11 @@ pidControl::pidControl(double* encRead,double* output,double* setPoint,double kp
    _kd=kd;
    _ki=ki;
 
+   //Serial.begin(115200);
+	//Serial.println("Instance Started");
   }
 
-void pidControl::softwareLimits(int16_t minPos=0, int16_t maxPos=4096){
+void pidControl::softwareLimits(double minPos=0, double maxPos=4096){
 	_minPos = minPos;
 	_maxPos = maxPos;
 }
@@ -42,42 +44,43 @@ void pidControl::controllerBegin(int encoderInput, int pwmOutput, int fwdOutput,
 	pidControl::workPID.SetMode(AUTOMATIC);
 }
 
-void pidControl::goTo(int16_t goToPosition){ 
+void pidControl::goTo(double goToPosition){ 
 	_setPoint=goToPosition;
 }
 
 bool pidControl::checkWrongDirection(){
-  if(_setPoint>encoderRead){
-    
-
-
-  }else if(_setPoint<encoderRead){
-
-
-  }
-  lastPosition = encoderRead;
-  return errorAlarm;
+	if(oneTime1){
+		oneTime1=false;
+		_encRead = analogRead(ENCODER);
+		_lastPosition = _encRead;
+	}else{
+		if(_setPoint>_encRead){
+		if((_lastPosition-_encRead)>100)return true; 
+		}else if(_setPoint<_encRead){
+			if((_lastPosition-_encRead)>-100)return true;
+		}
+	}
+  return false;
 }
 
-void pidControl::run(){
+void pidControl::run(bool enableAlarm = false){
 	pidControl::workPID.Compute();
 
-	int16_t encoderRead = analogRead(ENCODER);
-	bool noErrorWrite = false;
+	_encRead = analogRead(ENCODER);
 
-	if((encoderRead>_maxPos)){ //Mejorar para que retorne al punto máximo
+	if((_encRead>_maxPos)){ //Mejorar para que retorne al punto máximo
 		//bool noErrorWrite=true;
 		_setPoint=_maxPos;
-	}else if((encoderRead<_minPos)){
+	}else if((_encRead<_minPos)){
 		//bool noErrorWrite=true;
 		_setPoint=_minPos;
 	}
 
-	if(encoderRead < _setPoint){
+	if(_encRead < _setPoint){
 		digitalWrite(FWD_OUTPUT,LOW);
 		delay(1);
 		digitalWrite(REV_OUTPUT,HIGH);
-	}else if(encoderRead > _setPoint){
+	}else if(_encRead > _setPoint){
 		digitalWrite(REV_OUTPUT,LOW);
 		delay(1);
 		digitalWrite(FWD_OUTPUT,HIGH);
@@ -88,7 +91,24 @@ void pidControl::run(){
 
 	if(abs(_output)<_PID_THRESHOLD || abs(_output)<_PID_THRESHOLD)_output=0;
 
-	pwmWrite(PWM_OUTPUT,_output);
+	pwmWrite(PWM_OUTPUT,abs(_output));
+	if(!enableAlarm){
+	}/*else{
+		if(checkWrongDirection()){
+			pwmWrite(PWM_OUTPUT,0);
+		}
+	}*/
 }
 
+double pidControl::getEncoder(){
+	return _encRead;
+}
+
+double pidControl::getOutput(){
+	return _output;
+}
+
+double pidControl::getSetpoint(){
+	return _setPoint;
+}
 
