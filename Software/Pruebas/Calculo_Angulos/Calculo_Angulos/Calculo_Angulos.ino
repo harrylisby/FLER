@@ -1,10 +1,13 @@
-int p1 = 175; // en milimetros
+uint32_t microsBegin,microsEnd;
+
+
+double p1 = 175; // en milimetros
 double c1A = 140; //en milimetros
 double angulo1A; // en radianes
 double c1B = 140;
 double angulo1B;
 
-int p2 = 175;
+double p2 = 175;
 double c2A = 165;
 double angulo2A;
 double c2B = 165;
@@ -22,6 +25,8 @@ void setup() {
 }
 
 void loop() {
+  microsBegin = micros();
+
   angulo1A = (acos(c1A/p1)*180)/PI;
   angulo1B = 45 + (45 - (acos(c1B/p1)*180)/PI);
   angulo2A = (acos(c2A/p2)*180)/PI;
@@ -43,4 +48,8 @@ void loop() {
   Serial.print(angulo4A);
   Serial.print("  Ángulo 4B: ");
   Serial.println(angulo4B);
+
+  Serial.print("t: ");
+  Serial.println(microsBegin-microsEnd);
+  microsEnd = microsBegin;
 }
