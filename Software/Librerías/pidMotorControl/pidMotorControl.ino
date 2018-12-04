@@ -1,5 +1,5 @@
-// #include "Adafruit_MCP23008.h"
-// Adafruit_MCP23008 exp_io;
+#include "Adafruit_MCP23008.h"
+Adafruit_MCP23008 exp_io;
 
 #include "pidMotorControl.h"
 #include <EasyTransfer.h>

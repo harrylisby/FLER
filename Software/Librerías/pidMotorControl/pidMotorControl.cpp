@@ -35,7 +35,7 @@ void pidControl::controllerBegin(int encoderInput, int pwmOutput, int fwdOutput,
 	pinMode(ENCODER, INPUT_ANALOG);
 	pinMode(PWM_OUTPUT, PWM);
 	pinMode(FWD_OUTPUT,OUTPUT);
-	//exp_io.pinMode(REV_OUTPUT,OUTPUT);
+	exp_io.pinMode(REV_OUTPUT,OUTPUT);
 
 	minOut = minOutValue;
 	maxOut = maxOutValue;
@@ -79,13 +79,13 @@ void pidControl::run(bool enableAlarm = false){
 	if(_encRead < _setPoint){
 		digitalWrite(FWD_OUTPUT,LOW);
 		//delay(1);
-		//exp_io.digitalWrite(REV_OUTPUT,HIGH);
+		exp_io.digitalWrite(REV_OUTPUT,HIGH);
 	}else if(_encRead > _setPoint){
-		//exp_io.digitalWrite(REV_OUTPUT,LOW);
+		exp_io.digitalWrite(REV_OUTPUT,LOW);
 		//delay(1);
 		digitalWrite(FWD_OUTPUT,HIGH);
 	}else{
-		//exp_io.digitalWrite(REV_OUTPUT,LOW);
+		exp_io.digitalWrite(REV_OUTPUT,LOW);
 		digitalWrite(FWD_OUTPUT,HIGH);
 	}
 
