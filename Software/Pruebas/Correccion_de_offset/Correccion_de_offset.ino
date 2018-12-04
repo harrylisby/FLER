@@ -17,18 +17,18 @@ MPU6050 accelgyro(0x68); // <-- use for AD0 high
  
 int16_t ax, ay, az,gx, gy, gz;
  
-int mean_ax,mean_ay,mean_az,mean_gx,mean_gy,mean_gz,state=0;
-int ax_offset,ay_offset,az_offset,gx_offset,gy_offset,gz_offset;
+int16_t mean_ax,mean_ay,mean_az,mean_gx,mean_gy,mean_gz,state=0;
+int16_t ax_offset,ay_offset,az_offset,gx_offset,gy_offset,gz_offset;
  
 ///////////////////////////////////   SETUP   ////////////////////////////////////
 void setup() {
   // join I2C bus (I2Cdev library doesn't do this automatically)
   Wire.begin();
   // COMMENT NEXT LINE IF YOU ARE USING ARDUINO DUE
-  TWBR = 24; // 400kHz I2C clock (200kHz if CPU is 8MHz). Leonardo measured 250kHz.
+// TWBR = 24; // 400kHz I2C clock (200kHz if CPU is 8MHz). Leonardo measured 250kHz.
  
   // initialize serial communication
-  Serial.begin(115200);
+    Serial.begin(115200);
  
   // initialize device
   accelgyro.initialize();
@@ -48,6 +48,13 @@ void setup() {
   delay(3000);
   // verify connection
   Serial.println(accelgyro.testConnection() ? "MPU6050 connection successful" : "MPU6050 connection failed");
+  if (accelgyro.testConnection()==true){
+    Serial.println("ok");
+  }
+  else
+  {
+    Serial.println("Malo");
+  }
   delay(1000);
   // reset offsets
   accelgyro.setXAccelOffset(0);
@@ -178,4 +185,5 @@ void calibration(){
  
     if (ready==6) break;
   }
+}
 
