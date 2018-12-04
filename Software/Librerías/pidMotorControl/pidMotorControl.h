@@ -2,9 +2,9 @@
 #define pidMotorControl_h
 #define LIBRARY_VERSION 1.0.0
 
+#include "Adafruit_MCP23008.h"
+Adafruit_MCP23008 exp_io;
 #include <PID_v1.h>
-//#include "Adafruit_MCP23008.h"
-//Adafruit_MCP23008 exp_io;
 
 class pidControl{
 public:
