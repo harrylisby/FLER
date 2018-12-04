@@ -1,3 +1,6 @@
+// #include "Adafruit_MCP23008.h"
+// Adafruit_MCP23008 exp_io;
+
 #include "pidMotorControl.h"
 #include <EasyTransfer.h>
 
@@ -40,37 +43,37 @@ RECEIVED_DATA_STRUCTURE_2 rearData;
 #define IF1_ENC PA0
 #define IF1_PWM PB8
 #define IF1_FWD PB12
-#define IF1_REV PB13
+#define IF1_REV 0 //PB13
 
 //IF2 IO
 #define IF2_ENC PA1
 #define IF2_PWM PA7
 #define IF2_FWD PB5
-#define IF2_REV PB4
+#define IF2_REV 1 //PB4
 
 //IF3 IO
 #define IF3_ENC PA4
 #define IF3_PWM PA9
 #define IF3_FWD PA8
-#define IF3_REV PB15
+#define IF3_REV 2 //PB15
 
 //DF1 IO
 #define DF1_ENC PB1
 #define DF1_PWM PA7
 #define DF1_FWD PA6
-#define DF1_REV PC13
+#define DF1_REV 3 //PC13
 
 //DF2 IO
 #define DF2_ENC PB0
-#define DF2_PWM PB3
-#define DF2_FWD 0
-#define DF2_REV PB9
+#define DF2_PWM PB9
+#define DF2_FWD PB13
+#define DF2_REV 4 //PB13
 
 //DF3 IO
 #define DF3_ENC PA5
 #define DF3_PWM PB14
 #define DF3_FWD PB13
-#define DF3_REV PB11
+#define DF3_REV 5 //PB11
 
 
 //Parámetros de PID
@@ -93,20 +96,8 @@ pidControl DF3(&DF3_ENCREAD,&DF3_OUT,&frontData.SSP_DF3,FKP,FKI,FKD);
 
 
 void setup(){
-	Serial.begin(9600);
+	Serial.begin(115200);
   Serial2.begin(9600);
-
-  // exp_io.begin();
-
-  // exp_io.pinMode(0, OUTPUT);
-  // exp_io.pinMode(1, OUTPUT);
-  // exp_io.pinMode(2, OUTPUT);
-  // exp_io.pinMode(3, OUTPUT);
-  // exp_io.pinMode(4, OUTPUT);
-  // exp_io.pinMode(5, OUTPUT);
-  // exp_io.pinMode(6, OUTPUT);
-  // exp_io.pinMode(7, OUTPUT);
-
 
 #ifdef FRONT  
     Front.begin(details(frontData), &Serial2); //comunicación frontal
@@ -145,11 +136,11 @@ void loop(){
   uint32_t cycleBegin = micros();
 
   currentTime=millis();
-  if((currentTime-lastCycle)>1000){
+  if((currentTime-lastCycle)>10){
 
     IF1.run(false);
-    IF2.run(false);
-    IF3.run(false);
+    //IF2.run(false);
+    //IF3.run(false);
     //DF1.run(false);
     //DF2.run(false);
     //DF3.run(false);

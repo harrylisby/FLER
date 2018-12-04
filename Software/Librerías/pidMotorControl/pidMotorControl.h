@@ -4,12 +4,13 @@
 
 #include <PID_v1.h>
 #include "Adafruit_MCP23008.h"
+Adafruit_MCP23008 exp_io;
 
 class pidControl{
 public:
 	pidControl(double*,double*,double*,double,double,double);
 	PID workPID;
-	Adafruit_MCP23008 exp_io;
+	//Adafruit_MCP23008 ext_io;
 	void controllerBegin(int, int, int, int, double, double, double);
 	void softwareLimits(double, double);
 	void goTo(double);
