@@ -9,6 +9,6 @@ FLER - Four Legged Exploration Robot
 
 # Universidad Latina de Costa Rica, Ingeniería Electrónica.
 
-#PREVIEW:
+# Robot Preview:
 
 ![alt text](https://raw.githubusercontent.com/harrylisby/FLER/fler/modeloCinematico/Imagenes/v2_c.png)
