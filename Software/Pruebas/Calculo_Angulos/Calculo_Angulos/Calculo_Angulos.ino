@@ -1,10 +1,8 @@
 uint32_t microsBegin,microsEnd;
 
-
 double p1 = 175; // en milimetros
 double c1A = 165; //en milimetros
 double angulo1A; // de radianes a grados
-//double c1A = 140;
 double angulo1B;
 
 double p2 = 175;
@@ -15,11 +13,7 @@ double angulo2B;
 
 double HD = 56.1305;
 double c3A;
-//double c3B;
-//double c4A =200; //elegir variable (prueba)
 double angulo4A;
-//double c4B =200; //elegir variable (prueba)
-//double angulo4B;
 double angulo4B1 = 0.174533;
 double angulo4B2 = 0.261799;
 double HD1;
@@ -29,26 +23,18 @@ void setup() {
   Serial.begin(115200);
 }
 
-
 void loop() {
   microsBegin = micros();
-
-// el angulo va de 0 - 90
-// nos envia 
 
   angulo1A = 45 - RAD_TO_DEG*(acos(c1A/p1));
   angulo1B = 45 + RAD_TO_DEG*(acos(c1A/p1));
   angulo2A = 45 - RAD_TO_DEG*(acos(c2A/p2));
   angulo2B = 45 + RAD_TO_DEG*(acos(c2B/p2));
   c3A = c1A + c2A;
-  //c3B = c1A + c2B;
   angulo4A = RAD_TO_DEG*(atan(c3A/HD)); //triángulo verde
-//  HD1 = (tan(angulo4B1)*HD*180)/PI;//ultimo triangulo
-//  HD2 = (tan(angulo4B2)*HD*180)/PI;//ultimo triangulo
   HD1 = tan(angulo4B1)*HD;//ultimo triangulo
   HD2 = tan(angulo4B2)*HD;
-  //falta el otro triangulo
-
+  
   Serial.print("Ángulo 1A: ");
   Serial.print(angulo1A);
   Serial.print("  Ángulo 1B: ");
@@ -64,7 +50,6 @@ void loop() {
   Serial.print("  HD2: "); // triángulo de arriba
   Serial.print(HD2);
   
-
   Serial.print("   t: ");
   Serial.println(microsBegin-microsEnd);
   microsEnd = microsBegin;
