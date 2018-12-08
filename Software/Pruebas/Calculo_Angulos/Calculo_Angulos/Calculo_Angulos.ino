@@ -20,6 +20,10 @@ double c3A;
 double angulo4A;
 //double c4B =200; //elegir variable (prueba)
 //double angulo4B;
+double angulo4B1 = 0.174533;
+double angulo4B2 = 0.261799;
+double HD1;
+double HD2;
 
 void setup() {
   Serial.begin(115200);
@@ -32,16 +36,17 @@ void loop() {
 // el angulo va de 0 - 90
 // nos envia 
 
-  angulo1A = 45 - (acos(c1A/p1)*180)/PI;
-  angulo1B = 45 + (acos(c1A/p1)*180)/PI;
-  angulo2A = 45 - (acos(c2A/p2)*180)/PI;
-  angulo2B = 45 + (acos(c2B/p2)*180)/PI;
+  angulo1A = 45 - RAD_TO_DEG*(acos(c1A/p1));
+  angulo1B = 45 + RAD_TO_DEG*(acos(c1A/p1));
+  angulo2A = 45 - RAD_TO_DEG*(acos(c2A/p2));
+  angulo2B = 45 + RAD_TO_DEG*(acos(c2B/p2));
   c3A = c1A + c2A;
   //c3B = c1A + c2B;
-  angulo4A = (atan(c3A/HD)*180)/PI; //triángulo verde
-  //angulo4B1 = (acos(c4B/c3B)*180)/PI;
-  //angulo4B2 = (acos(c4B/c3B)*180)/PI;
-
+  angulo4A = RAD_TO_DEG*(atan(c3A/HD)); //triángulo verde
+//  HD1 = (tan(angulo4B1)*HD*180)/PI;//ultimo triangulo
+//  HD2 = (tan(angulo4B2)*HD*180)/PI;//ultimo triangulo
+  HD1 = tan(angulo4B1)*HD;//ultimo triangulo
+  HD2 = tan(angulo4B2)*HD;
   //falta el otro triangulo
 
   Serial.print("Ángulo 1A: ");
@@ -54,13 +59,13 @@ void loop() {
   Serial.print(angulo2B);
   Serial.print("  Ángulo 4A: "); //triángulo verde
   Serial.print(angulo4A);
-  Serial.print("  Ángulo 4B1: "); // triángulo de arriba
-  Serial.println(angulo4B);  
-  Serial.print("  Ángulo 4B2: "); // triángulo de arriba
-  Serial.println(angulo4B);
+  Serial.print("  HD1: "); // triángulo de arriba
+  Serial.print(HD1);  
+  Serial.print("  HD2: "); // triángulo de arriba
+  Serial.print(HD2);
   
 
-  Serial.print("t: ");
+  Serial.print("   t: ");
   Serial.println(microsBegin-microsEnd);
   microsEnd = microsBegin;
 }
