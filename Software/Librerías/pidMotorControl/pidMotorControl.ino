@@ -1,5 +1,5 @@
-// #include "Adafruit_MCP23008.h"
-// Adafruit_MCP23008 exp_io;
+#include "Adafruit_MCP23008.h"
+Adafruit_MCP23008 exp_io;
 
 #include "pidMotorControl.h"
 #include <EasyTransfer.h>
@@ -40,40 +40,40 @@ RECEIVED_DATA_STRUCTURE_2 rearData;
 
 //GPIO
 //IF1 IO
-#define IF1_ENC PA0
-#define IF1_PWM PB8
+#define IF1_ENC PA2
+#define IF1_PWM PB6
 #define IF1_FWD PB12
-#define IF1_REV 0 //PB13
+#define IF1_REV PB13//0 //PB13
 
 //IF2 IO
-#define IF2_ENC PA1
-#define IF2_PWM PA7
-#define IF2_FWD PB5
-#define IF2_REV 1 //PB4
+#define IF2_ENC PA3
+#define IF2_PWM PB7
+#define IF2_FWD PB14
+#define IF2_REV PB15//1 //PB4
 
 //IF3 IO
 #define IF3_ENC PA4
-#define IF3_PWM PA9
+#define IF3_PWM PB8
 #define IF3_FWD PA8
-#define IF3_REV 2 //PB15
+#define IF3_REV PB9//2 //PB15
 
 //DF1 IO
-#define DF1_ENC PB1
-#define DF1_PWM PA7
-#define DF1_FWD PA6
-#define DF1_REV 3 //PC13
+#define DF1_ENC PA5
+#define DF1_PWM PB9
+#define DF1_FWD PA10
+#define DF1_REV PA11//3 //PC13
 
 //DF2 IO
-#define DF2_ENC PB0
-#define DF2_PWM PB9
-#define DF2_FWD PB13
-#define DF2_REV 4 //PB13
+#define DF2_ENC PA6
+#define DF2_PWM PA0
+#define DF2_FWD PA12
+#define DF2_REV PA15//4 //PB13
 
 //DF3 IO
-#define DF3_ENC PA5
-#define DF3_PWM PB14
-#define DF3_FWD PB13
-#define DF3_REV 5 //PB11
+#define DF3_ENC PA7
+#define DF3_PWM PA1
+#define DF3_FWD PB3
+#define DF3_REV PB4
 
 
 //Parámetros de PID
@@ -111,7 +111,7 @@ void setup(){
 	//IF1.controllerBegin(ENCODER,PWM,FWD,REV,-65535,65535,15000);
 
   IF1.softwareLimits(250,3750);
-  IF1.controllerBegin(PA0,PB8,PB12,PB13,-65535,65535,15000);
+  IF1.controllerBegin(IF1_ENC,IF1_PWM,IF1_FWD,IF2_REV,-65535,65535,15000);
 
   IF2.softwareLimits(250,3750);
   IF2.controllerBegin(IF2_ENC,IF2_PWM,IF2_FWD,IF2_REV,-65535,65535,15000);
@@ -139,11 +139,11 @@ void loop(){
   if((currentTime-lastCycle)>10){
 
     IF1.run(false);
-    //IF2.run(false);
-    //IF3.run(false);
-    //DF1.run(false);
-    //DF2.run(false);
-    //DF3.run(false);
+    IF2.run(false);
+    IF3.run(false);
+    DF1.run(false);
+    DF2.run(false);
+    DF3.run(false);
     //Serial.println(String(IF1.getEncoder())+"  "+String(IF1.getSetpoint())+"  "+String(IF1.getOutput())+"   "+String(IF1.checkWrongDirection()));
 
     //serialDecoder();
