@@ -2,18 +2,13 @@
 #include "MPU6050.h"
 #include "Wire.h"
  
-///////////////////////////////////   CONFIGURATION   /////////////////////////////
-//Change this 3 variables if you want to fine tune the skecth to your needs.
-int buffersize=1000;     //Amount of readings used to average, make it higher to get more precision but sketch will be slower  (default:1000)
-int acel_deadzone=8;     //Acelerometer error allowed, make it lower to get more precision, but sketch may not converge  (default:8)
-int giro_deadzone=1;     //Giro error allowed, make it lower to get more precision, but sketch may not converge  (default:1)
+
+int buffersize=1000;   
+int acel_deadzone=8;   
+int giro_deadzone=1;   
  
-// default I2C address is 0x68
-// specific I2C addresses may be passed as a parameter here
-// AD0 low = 0x68 (default for InvenSense evaluation board)
-// AD0 high = 0x69
-//MPU6050 accelgyro;
-MPU6050 accelgyro(0x68); // <-- use for AD0 high
+
+MPU6050 accelgyro(0x68); // colocar AD0 en bajo para utilizar esta dirección
  
 int16_t ax, ay, az,gx, gy, gz;
  
@@ -22,32 +17,25 @@ int16_t ax_offset,ay_offset,az_offset,gx_offset,gy_offset,gz_offset;
  
 ///////////////////////////////////   SETUP   ////////////////////////////////////
 void setup() {
-  // join I2C bus (I2Cdev library doesn't do this automatically)
-  Wire.begin();
-  // COMMENT NEXT LINE IF YOU ARE USING ARDUINO DUE
-// TWBR = 24; // 400kHz I2C clock (200kHz if CPU is 8MHz). Leonardo measured 250kHz.
+  Wire.begin(); //inicia la comunicación I2Cdev
+  Serial.begin(115200);
  
-  // initialize serial communication
-    Serial.begin(115200);
- 
-  // initialize device
   accelgyro.initialize();
  
-  // wait for ready
-  while (Serial.available() && Serial.read()); // empty buffer
+  while (Serial.available() && Serial.read()); 
   while (!Serial.available()){
-    Serial.println(F("Send any character to start sketch.\n"));
+    Serial.println(F("Presione cualquier tecla para continuar"));
     delay(1500);
   }                
-  while (Serial.available() && Serial.read()); // empty buffer again
+  while (Serial.available() && Serial.read());
  
   // start message
-  Serial.println("\nMPU6050 Calibration Sketch");
+  Serial.println("Sketch para calibración");
   delay(2000);
-  Serial.println("\nYour MPU6050 should be placed in horizontal position, with package letters facing up. \nDon't touch it until you see a finish message.\n");
+  Serial.println("\nColoque el sensor en posición horizontal y no lo mueva\n");
   delay(3000);
-  // verify connection
-  Serial.println(accelgyro.testConnection() ? "MPU6050 connection successful" : "MPU6050 connection failed");
+  
+  Serial.println(accelgyro.testConnection() ? "MPU6050 conexión exitosa" : "MPU6050 conexión fallida");
   if (accelgyro.testConnection()==true){
     Serial.println("ok");
   }
