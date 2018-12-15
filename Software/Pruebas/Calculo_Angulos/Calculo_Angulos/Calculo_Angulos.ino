@@ -1,23 +1,22 @@
 uint32_t microsBegin,microsEnd;
 
-double p1 = 175; // en milimetros
-double c1A = 165; //en milimetros
-double angulo1A; // de radianes a grados
+double p1 = 175; // parte de arriba de la pata en milimetros
+double c1A = 165; // adyacente pata arriba en milimetros (VARIABLE)
+double angulo1A;
 double angulo1B;
 
-double p2 = 175;
-double c2A = 155;
+double p2 = 175; // parte de abajo de la pata en milimetros
+double c2A = 165; // adyacente de la parte de abajo (VARIABLE)
 double angulo2A;
-double c2B = 165;
 double angulo2B;
 
-double HD = 56.1305;
-double c3A;
-double angulo4A;
-double angulo4B1 = 0.174533;
-double angulo4B2 = 0.261799;
-double HD1;
-double HD2;
+double HD = 56.1305; // distancia entre el eje del hombro y la pata
+double c3A; // Parte de arriba + parte de abajo de la pata
+double angulo4A; // Triángulo grande (pata completa)
+double angulo4B1 = 0.174533; // 10 grados en radianes
+double angulo4B2 = 0.261799; // 15 grados en radianes
+double HD1; // opuesto del angulo 4B1
+double HD2; // opuesto del angulo 4B2
 
 void setup() {
   Serial.begin(115200);
@@ -29,10 +28,10 @@ void loop() {
   angulo1A = 45 - RAD_TO_DEG*(acos(c1A/p1));
   angulo1B = 45 + RAD_TO_DEG*(acos(c1A/p1));
   angulo2A = 45 - RAD_TO_DEG*(acos(c2A/p2));
-  angulo2B = 45 + RAD_TO_DEG*(acos(c2B/p2));
+  angulo2B = 45 + RAD_TO_DEG*(acos(c2A/p2));
   c3A = c1A + c2A;
-  angulo4A = RAD_TO_DEG*(atan(c3A/HD)); //triángulo verde
-  HD1 = tan(angulo4B1)*HD;//ultimo triangulo
+  angulo4A = RAD_TO_DEG*(atan(c3A/HD));
+  HD1 = tan(angulo4B1)*HD;
   HD2 = tan(angulo4B2)*HD;
   
   Serial.print("Ángulo 1A: ");
