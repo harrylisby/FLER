@@ -58,7 +58,7 @@ RECEIVED_DATA_STRUCTURE_2 rearData;
 //DF1 IO
 #define DF1_ENC PA5
 #define DF1_PWM PB9
-#define DF1_FWD PA10
+#define DF1_FWD PB5//PA11
 #define DF1_REV PA11//3 //PC13
 
 //DF2 IO
