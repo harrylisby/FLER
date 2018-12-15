@@ -1,5 +1,3 @@
-#include "Adafruit_MCP23008.h"
-Adafruit_MCP23008 exp_io;
 
 #include "pidMotorControl.h"
 #include <EasyTransfer.h>
@@ -97,7 +95,7 @@ pidControl DF3(&DF3_ENCREAD,&DF3_OUT,&frontData.SSP_DF3,FKP,FKI,FKD);
 
 void setup(){
 	Serial.begin(115200);
-  Serial2.begin(9600);
+	Serial2.begin(9600);
 
 #ifdef FRONT  
     Front.begin(details(frontData), &Serial2); //comunicación frontal
@@ -147,22 +145,79 @@ void loop(){
     //Serial.println(String(IF1.getEncoder())+"  "+String(IF1.getSetpoint())+"  "+String(IF1.getOutput())+"   "+String(IF1.checkWrongDirection()));
 
     //serialDecoder();
+    serialDataPrint();
 
     uint32_t cycleEnd = micros();
-    Serial.println((cycleEnd-cycleBegin));
+    //Serial.println((cycleEnd-cycleBegin));
     lastCycle=currentTime;
   }	
 }
 
+double filter(double lengthOrig, double currentValue) {
+  double filter = 30;//mydata_back.filter;
+  double lengthFiltered =  (lengthOrig + (currentValue * filter)) / (filter + 1);
+  return lengthFiltered;  
+}
 
-/*
+
+uint32_t currentTimeSerial;
+uint32_t previousTimeSerial;
+void serialDataPrint(){
+	currentTimeSerial=currentTime;
+	if((currentTimeSerial-previousTimeSerial)>1000){
+		Serial.print("SSP_IF1: ");
+		Serial.println(frontData.SSP_IF1);
+		Serial.print("SSP_IF2: ");
+		Serial.println(frontData.SSP_IF2);
+		Serial.print("SSP_IF3: ");
+		Serial.println(frontData.SSP_IF3);
+		Serial.print("SSP_DF1: ");
+		Serial.println(frontData.SSP_DF1);
+		Serial.print("SSP_DF1: ");
+		Serial.println(frontData.SSP_DF1);
+		Serial.print("SSP_DF1: ");
+		Serial.println(frontData.SSP_DF1);
+		Serial.println(" ");
+
+		previousTimeSerial=currentTimeSerial;
+	}
+}
+
+#ifdef FRONT
 void serialDecoder(){
   if (Serial.available() > 0) {
-    if(Serial.peek()=='c'){  //Comando c: Cambiar PID SP1
-      Serial.read();
-      IF1_SP=Serial.parseInt();
-      IF1.goTo(IF1_SP);
-    }
+    frontData.SSP_IF1=decodePrintData('z',frontData.SSP_IF1);
+    frontData.SSP_IF2=decodePrintData('x',frontData.SSP_IF2);
+    frontData.SSP_IF3=decodePrintData('c',frontData.SSP_IF3);
+    frontData.SSP_DF1=decodePrintData('v',frontData.SSP_IF1);
+    frontData.SSP_DF2=decodePrintData('b',frontData.SSP_IF2);
+    frontData.SSP_DF3=decodePrintData('n',frontData.SSP_IF3);
   }
   while(Serial.available() > 0)Serial.read();
-}*/
+}
+#endif
+
+#ifdef REAR
+void serialDecoder(){
+  if (Serial.available() > 0) {
+    rearData.SSP_IR1=decodePrintData('z',frontData.SSP_IF1);
+    rearData.SSP_IR2=decodePrintData('x',frontData.SSP_IF2);
+    rearData.SSP_IR3=decodePrintData('c',frontData.SSP_IF3);
+    rearData.SSP_DR1=decodePrintData('v',frontData.SSP_IF1);
+    rearData.SSP_DR2=decodePrintData('b',frontData.SSP_IF2);
+    rearData.SSP_DR3=decodePrintData('n',frontData.SSP_IF3);
+  }
+  while(Serial.available() > 0)Serial.read();
+}
+#endif
+
+
+uint16_t decodePrintData(char expectedChar,uint16_t currentData){
+  uint16_t readV=currentData;
+  if(Serial.peek()==expectedChar){
+    Serial.read();
+    readV=Serial.parseInt();
+    Serial.println("Nuevo valor: "+String(readV));
+  }
+  return readV;
+}
