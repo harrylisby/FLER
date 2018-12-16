@@ -1,13 +1,7 @@
 //I LOVE SOHCAHTOA
 
-
-
 uint32_t microsBegin,microsEnd;
-
-
-
-
-
+double valZ, valX, valY;
 
 void setup() {
   Serial.begin(115200);
@@ -16,8 +10,8 @@ void setup() {
 void loop() {
   microsBegin = micros();
 
+  modeloCinematico(valZ, valY, valX);
 
-  
   Serial.print("   t: ");
   Serial.println(microsBegin-microsEnd);
   microsEnd = microsBegin;
