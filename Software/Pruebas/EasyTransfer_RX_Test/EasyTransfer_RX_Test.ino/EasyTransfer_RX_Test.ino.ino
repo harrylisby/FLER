@@ -61,7 +61,7 @@ void loop(){
   SP_DF2 = frontData.SSP_DF2;
   SP_DF3 = frontData.SSP_DF3;
         
-  /*Serial.println("SP_IF1: " + String(SP_IF1)+ " SP_IF2: " + String(SP_IF2)+ " SP_IF3: " + String(SP_IF3) + " SP_DF1: " + String(SP_DF1)+ " SP_DF2: " + String(SP_DF2)+ " SP_DF3: " + String(SP_DF3));*/   
+  Serial.println("SP_IF1: " + String(SP_IF1)+ " SP_IF2: " + String(SP_IF2)+ " SP_IF3: " + String(SP_IF3) + " SP_DF1: " + String(SP_DF1)+ " SP_DF2: " + String(SP_DF2)+ " SP_DF3: " + String(SP_DF3));   
 #endif
 
 #ifdef REAR

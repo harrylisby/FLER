@@ -6,7 +6,7 @@ int16_t SP_IF1, SP_IF2, SP_IF3, SP_DF1, SP_DF2, SP_DF3, SP_IR1, SP_IR2, SP_IR3, 
 EasyTransfer Front;
 EasyTransfer Rear; 
 
-#define REAR
+#define FRONT
 
 #ifdef FRONT
 String valorAImprimir = "front";
@@ -56,7 +56,7 @@ void loop(){
   serialDecoder();
 
 
-  Serial.println(valorAImprimir);
+  //Serial.println(valorAImprimir);
   
 }
 
