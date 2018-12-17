@@ -5,12 +5,11 @@
 int16_t SP_IF1, SP_IF2, SP_IF3, SP_DF1, SP_DF2, SP_DF3; //Variables frontales
 int16_t SP_IR1, SP_IR2, SP_IR3, SP_DR1, SP_DR2, SP_DR3; //Variables traseras
 
-//create object
-EasyTransfer Front;
-EasyTransfer Rear; 
 
 #ifdef FRONT
 //*********************************************************************
+//create object
+EasyTransfer Front;
 struct RECEIVED_DATA_STRUCTURE{
 
   int16_t SSP_IF1, SSP_IF2, SSP_IF3, SSP_DF1, SSP_DF2, SSP_DF3;
@@ -23,6 +22,7 @@ RECEIVED_DATA_STRUCTURE frontData;
 #endif
 
 #ifdef REAR
+EasyTransfer Rear; 
 //*********************************************************************
 struct RECEIVED_DATA_STRUCTURE_2{
 
