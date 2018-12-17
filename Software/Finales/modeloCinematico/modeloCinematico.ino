@@ -67,7 +67,7 @@ void loop(){
   serialDecoder();
 
   if((currentTime-lastTime1)>10){
-    modeloCinematico(controllerReader(VRy_L),controllerReader(VRy_R),controllerReader(VRx_L));
+    modeloCinematico(controllerReader(VRy_L),controllerReader(VRy_R),controllerReader(VRx_R));
     lastTime1=currentTime;
   }
   
@@ -112,6 +112,8 @@ void modeloCinematico(double Zpos, double Ypos, double Xpos){ //zyx
   //Calculos del eje X
   rho = atan(Xpos/Zpos);
   rho = rho*RAD_TO_DEG;
+
+  //CORREGIR Y SEPARAR EJES DE NUEVO ZPOS
 
   if((currentTime-lastTime3)>250){
     Serial.println("cita: "+String(cita)+" alfa: "+String(alfa)+" rho: "+String(rho));
