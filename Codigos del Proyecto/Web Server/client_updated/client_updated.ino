@@ -40,21 +40,21 @@ void loop() {
        delay(10);
 //Lectura de todas las lineas de datos y las imprime en el serial
         while(client.available()){
-        String line = client.readStringUntil('\r');
-        hums = stof(line.substring(14,19));
-        Serial.println(hums);
-        temps = stof(line.substring(33,38));
-        Serial.println(temps);
-        gass = stof(line.substring(52,57));
-        Serial.println(gass); 
-        /*String line = client.readStringUntil('\r');
-        String(hums) = line.substring(14,19);
-        Serial.println(hums);
-        String(temps) = line.substring(33,38);
-        Serial.println(temps);
-        String(gass) = line.substring(52,57);
-        Serial.println(gass); 
-        //Serial.print(line);*/
+          String line = client.readStringUntil('\r');
+          hums = line.substring(14,19).toFloat();
+          Serial.println(hums);
+          temps = line.substring(33,38).toFloat();
+          Serial.println(temps);
+          gass = line.substring(52,57).toFloat();
+          Serial.println(gass); 
+          /*String line = client.readStringUntil('\r');
+          String(hums) = line.substring(14,19);
+          Serial.println(hums);
+          String(temps) = line.substring(33,38);
+          Serial.println(temps);
+          String(gass) = line.substring(52,57);
+          Serial.println(gass); 
+          //Serial.print(line);*/
        }
        
 //Cierra la conexión entre los dos ESP8266
