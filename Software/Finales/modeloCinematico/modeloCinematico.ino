@@ -8,14 +8,6 @@ EasyTransfer Rear;
 
 #define FRONT
 
-#ifdef FRONT
-String valorAImprimir = "front";
-#endif
-
-#ifdef REAR
-String valorAImprimir = "rear";
-#endif
-
 //*********************************************************************
 struct SEND_DATA_STRUCTURE{
 
@@ -38,26 +30,53 @@ struct SEND_DATA_STRUCTURE_2{
 SEND_DATA_STRUCTURE_2 rearData;
 //*********************************************************************
 
+//Joystic
+#define VRx_R PA0
+#define VRy_R PA1
+#define VRx_L PA4
+#define VRy_L PA5
+
+
 
 void setup(){
+  //Serial - EasyTransfer
   Serial.begin(115200);
   Serial2.begin(9600);
   Serial3.begin(9600);
-  
-  //start the library, pass in the data details and the name of the serial port. Can be Serial, Serial1, Serial2, etc.
   Front.begin(details(frontData), &Serial2);
   Rear.begin(details(rearData), &Serial3);
+
+  //Joystic
+  pinMode(VRx_R,INPUT_ANALOG);
+  pinMode(VRy_R,INPUT_ANALOG);
+  pinMode(VRx_L,INPUT_ANALOG);
+  pinMode(VRy_L,INPUT_ANALOG);
+
 }
 
+uint32_t currentTime;
+uint32_t lastTime1;//Para modeloCinematico
+uint32_t lastTime2;//Para Joystic
+uint32_t lastTime3;//Print modeloCinematico
+
 void loop(){
+  currentTime = millis();
   //send the data
   Front.sendData();
   Rear.sendData();
   serialDecoder();
 
-
-  //Serial.println(valorAImprimir);
+  if((currentTime-lastTime1)>10){
+    modeloCinematico(controllerReader(VRy_L),controllerReader(VRy_R),controllerReader(VRx_L));
+    lastTime1=currentTime;
+  }
   
+
+  //JoysticReads
+  if((currentTime-lastTime2)>500){
+    Serial.println("xL: "+String(controllerReader(VRx_L))+" yL: "+String(controllerReader(VRy_L))+" xR: "+String(controllerReader(VRx_R))+" yR: "+String(controllerReader(VRy_R)));
+    lastTime2=currentTime;
+  }
 }
 
 void modeloCinematico(double Zpos, double Ypos, double Xpos){ //zyx
@@ -69,24 +88,46 @@ void modeloCinematico(double Zpos, double Ypos, double Xpos){ //zyx
   double Xex = 56.1305; //X extra const
   double alfa; //Eje Y
   double rho; //Eje X
-  double P = 175; //Longitud estándar
+  double P = 175; //longitud estándar
   double mediaAltura = Zpos/2; //Mitad de la altura
+
+  //Conversiones: IMPORTANTE CALCULAR LIMITES GEOMETRICOS
+  Zpos = convert(Zpos,0,100,0,350);
+  Ypos = convert(Ypos,0,100,0,75);
+  Xpos = convert(Xpos,0,100,0,25);
 
   //Calculos del eje Z
   cita = acos(mediaAltura/P);
   citaPrima = 2*cita;
+  cita = cita*RAD_TO_DEG;
   //Leer valor de beta?
   Zex = Xex*tan(beta);
-  //Convertir a grados?
+  //Zex = Zex*RAD_TO_DEG;
 
 
   //Calculos del eje Y
   alfa = atan(Ypos/Zpos);
-  //Convertir a grados?
+  alfa = alfa*RAD_TO_DEG;
 
   //Calculos del eje X
   rho = atan(Xpos/Zpos);
+  rho = rho*RAD_TO_DEG;
 
+  if((currentTime-lastTime3)>250){
+    Serial.println("cita: "+String(cita)+" alfa: "+String(alfa)+" rho: "+String(rho));
+  }
+
+}
+
+double convert(double x, double in_min, double in_max, double out_min, double out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+double controllerReader(int analogPin){
+  double aValue = analogRead(analogPin);
+  aValue=aValue/40.96;
+  return aValue;
 }
 
 void serialDecoder(){
