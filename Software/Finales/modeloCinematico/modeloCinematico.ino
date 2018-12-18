@@ -31,10 +31,10 @@ SEND_DATA_STRUCTURE_2 rearData;
 //*********************************************************************
 
 //Joystic
-#define VRx_R PA0
-#define VRy_R PA1
-#define VRx_L PA4
-#define VRy_L PA5
+#define VRx_R PA1
+#define VRy_R PA0
+#define VRx_L PA5
+#define VRy_L PA4
 
 
 
@@ -80,6 +80,12 @@ void loop(){
 }
 
 void modeloCinematico(double Zpos, double Ypos, double Xpos){ //zyx
+
+//Conversiones: IMPORTANTE CALCULAR LIMITES GEOMETRICOS
+  Zpos = convert(Zpos,0,4095,250,350);
+  Ypos = convert(Ypos,0,4095,0,75);
+  Xpos = convert(Xpos,0,4095,0,25);
+
 //Variables
   double cita; //Eje Z: Superior
   double citaPrima; //Eje Z: Inferior
@@ -88,18 +94,14 @@ void modeloCinematico(double Zpos, double Ypos, double Xpos){ //zyx
   double Xex = 56.1305; //X extra const
   double alfa; //Eje Y
   double rho; //Eje X
-  double P = 175; //longitud estándar
-  double mediaAltura = Zpos/2; //Mitad de la altura
+  double P = 175.00; //longitud estándar
+  double mediaAltura = Zpos/2.00; //Mitad de la altura
 
-  //Conversiones: IMPORTANTE CALCULAR LIMITES GEOMETRICOS
-  Zpos = convert(Zpos,0,100,0,350);
-  Ypos = convert(Ypos,0,100,0,75);
-  Xpos = convert(Xpos,0,100,0,25);
 
   //Calculos del eje Z
   cita = acos(mediaAltura/P);
-  citaPrima = 2*cita;
   cita = cita*RAD_TO_DEG;
+  citaPrima = 2*cita;
   //Leer valor de beta?
   Zex = Xex*tan(beta);
   //Zex = Zex*RAD_TO_DEG;
@@ -115,8 +117,9 @@ void modeloCinematico(double Zpos, double Ypos, double Xpos){ //zyx
 
   //CORREGIR Y SEPARAR EJES DE NUEVO ZPOS
 
-  if((currentTime-lastTime3)>250){
-    Serial.println("cita: "+String(cita)+" alfa: "+String(alfa)+" rho: "+String(rho));
+  if((currentTime-lastTime3)>500){
+    Serial.println("cita: "+String(cita)+" citaP: "+String(citaPrima)+" Zpos: "+String(Zpos)+" alfa: "+String(alfa)+" Ypos: "+String(Ypos)
+    +" rho: "+String(rho)+" Xpos: "+String(Xpos));
   }
 
 }
@@ -128,7 +131,7 @@ double convert(double x, double in_min, double in_max, double out_min, double ou
 
 double controllerReader(int analogPin){
   double aValue = analogRead(analogPin);
-  aValue=aValue/40.96;
+  //aValue=aValue/40.96;
   return aValue;
 }
 
