@@ -82,9 +82,6 @@ uint32_t lastTime3;//Print modeloCinematicoXYZ
 
 void loop(){
   currentTime = millis();
-  //send the data
-  Front.sendData();
-  Rear.sendData();
 
   serialDecoder();
 
@@ -92,7 +89,10 @@ void loop(){
     modeloCinematicoXYZ(controllerReader(VRy_L),controllerReader(VRy_R),controllerReader(VRx_R));
     lastTime1=currentTime;
   }
-  
+
+  //send the data
+  Front.sendData();
+  Rear.sendData();
 
   //JoysticReads
   if((currentTime-lastTime2)>500){
@@ -157,6 +157,11 @@ void modeloCinematicoXYZ(double Zpos, double Ypos, double Xpos){ //zyx
     +" rho: "+String(rho)+" Xpos: "+String(Xpos));
     //Serial.println(String(controlData.valZ)+"  "+String(controlData.valY)+"  "+String(controlData.valX));
   }
+//SSP_IF1, SSP_IF2, SSP_IF3, SSP_DF1, SSP_DF2, SSP_DF3;
+  frontData.SSP_IF1=rho;
+  frontData.SSP_IF2=cita;
+  frontData.SSP_IF3=alfa;
+
 }
 
 double convert(double x, double in_min, double in_max, double out_min, double out_max){
