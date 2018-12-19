@@ -1,10 +1,12 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include "Nextion.h" 
+#include <EasyTransfer.h>
 
 
 
-#define WIRE_COMMS //Habilitar i2c
+//#define WIRE_COMMS //Habilitar i2c
+//#define UART_COMMS //Habilitar UART
 
 #ifdef WIRE_COMMS
 #include <Wire.h>
@@ -15,12 +17,12 @@ EasyTransferI2C ET;
 
 struct SEND_DATA_STRUCTURE{
   //Exactamente la misma estructura en el otro microcontrolador.
-  int16_t Z;
-  int16_t Y;
-  int16_t X;
-  int16_t G;
-  int16_t I;
-  int16_t R;
+  int16_t valZ;
+  int16_t valY;
+  int16_t valX;
+  int16_t valG;
+  int16_t valI;
+  int16_t valR;
 };
 //nombre de la estructura
 SEND_DATA_STRUCTURE myDataI2C;
@@ -29,6 +31,26 @@ SEND_DATA_STRUCTURE myDataI2C;
 #define I2C_SLAVE_ADDRESS 9
 
 #endif //WIRE_COMMS
+
+/////////////////////////////////////////////////////////////////
+
+EasyTransfer ET;
+
+#ifdef UART_COMMS
+
+struct SEND_DATA_STRUCTURE{
+  //Exactamente la misma estructura en el otro microcontrolador.
+  int16_t valZ;
+  int16_t valY;
+  int16_t valX;
+  int16_t valG;
+  int16_t valI;
+  int16_t valR;
+};
+//nombre de la estructura
+SEND_DATA_STRUCTURE controlData;
+
+#endif //UART_COMMS
 
 
 
@@ -52,6 +74,10 @@ void setup() {
   ET.begin(details(mydata), &Wire);
 #endif //WIRE_COMMS
 
+#ifdef UART_COMMS
+  //no implementado
+#endif UART_COMMS
+
   Serial.begin(9600);        
   delay(10);                            
   WiFi.mode(WIFI_STA);          
@@ -67,9 +93,9 @@ void setup() {
 void loop() {
 
 #ifdef WIRE_COMMS
-  myDataI2C.Z = 200;
-  myDataI2C.Y = 300;
-  myDataI2C.X = 400;
+  myDataI2C.valZ = 200;
+  myDataI2C.valY = 300;
+  myDataI2C.valX = 400;
 
   ET.sendData(I2C_SLAVE_ADDRESS);
 #endif //WIRE_COMMS

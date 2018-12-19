@@ -1,22 +1,18 @@
 #include <EasyTransfer.h>
-#include <EasyTransferI2C.h>
 
-EasyTransferI2C ET;
+EasyTransfer Control;
 
 struct RECEIVE_DATA_STRUCTURE{
   //Exactamente la misma estructura en el otro microcontrolador.
-  int16_t Z;
-  int16_t Y;
-  int16_t X;
-  int16_t G;
-  int16_t I;
-  int16_t R;
+  int16_t valZ;
+  int16_t valY;
+  int16_t valX;
+  int16_t valG;
+  int16_t valI;
+  int16_t valR;
 };
 //nombre de la estructura
-RECEIVE_DATA_STRUCTURE myDataI2C;
-
-//define slave i2c address
-#define I2C_SLAVE_ADDRESS 9
+RECEIVE_DATA_STRUCTURE controlData;
 
 int16_t SP_IF1, SP_IF2, SP_IF3, SP_DF1, SP_DF2, SP_DF3, SP_IR1, SP_IR2, SP_IR3, SP_DR1, SP_DR2, SP_DR3;
 
@@ -59,15 +55,17 @@ SEND_DATA_STRUCTURE_2 rearData;
 void setup(){
   //Serial - EasyTransfer
   Serial.begin(115200);
+  Serial1.begin(9600);
   Serial2.begin(9600);
   Serial3.begin(9600);
+  Control.begin(details(controlData),&Serial1);
   Front.begin(details(frontData), &Serial2);
   Rear.begin(details(rearData), &Serial3);
 
   //I2C
-  Wire.begin(I2C_SLAVE_ADDRESS);
-  ET.begin(details(myDataI2C), &Wire);
-  Wire.onReceive(receive);
+  // Wire.begin(I2C_SLAVE_ADDRESS);
+  // ET.begin(details(controlData), &Wire);
+  // Wire.onReceive(receive);
 
   //Joystic
   pinMode(VRx_R,INPUT_ANALOG);
@@ -87,6 +85,7 @@ void loop(){
   //send the data
   Front.sendData();
   Rear.sendData();
+
   serialDecoder();
 
   if((currentTime-lastTime1)>10){
@@ -156,6 +155,7 @@ void modeloCinematicoXYZ(double Zpos, double Ypos, double Xpos){ //zyx
   if((currentTime-lastTime3)>500){
     Serial.println("cita: "+String(cita)+" citaP: "+String(citaPrima)+" Zpos: "+String(Zpos)+" ZnewX: "+String(ZnewX)+" alfa: "+String(alfa)+" Ypos: "+String(Ypos)
     +" rho: "+String(rho)+" Xpos: "+String(Xpos));
+    //Serial.println(String(controlData.valZ)+"  "+String(controlData.valY)+"  "+String(controlData.valX));
   }
 }
 

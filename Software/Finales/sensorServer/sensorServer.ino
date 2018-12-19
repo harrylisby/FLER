@@ -5,6 +5,28 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 
+//#define UART_COMMS; //Activa UART ET
+
+#ifdef UART_COMMS
+#include <EasyTransfer.h>
+
+EasyTransfer ET;
+
+struct SEND_DATA_STRUCTURE{
+  //Exactamente la misma estructura en el otro microcontrolador.
+  int16_t valZ;
+  int16_t valY;
+  int16_t valX;
+  int16_t valG;
+  int16_t valI;
+  int16_t valR;
+};
+//nombre de la estructura
+SEND_DATA_STRUCTURE controlData;
+
+#endif //UART_COMMS
+
+
 const char* ssid = "FLER";  // SSID of esp8266
 //const char* password = "fler123";   //
 
@@ -55,9 +77,19 @@ void setup() {
   server.on("/DataSensores", handleRoot);           //Checking client connection
   server.begin();                       // Start the server
   Serial.println("Server started");
+
+  //UART - EasyTransfer
+#ifdef UART_COMMS
+  ET.begin(details(controlData),Serial);
+#endif UART_COMMS
+
 }
 
 void loop() {
+#ifdef UART_COMMS  
+  ET.sendData();
+#endif
+
   int currentTime=millis();
   if((currentTime-timeTracker)>timeInterval){
     timeTracker=currentTime;
