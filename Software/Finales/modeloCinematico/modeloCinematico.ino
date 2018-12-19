@@ -83,12 +83,14 @@ void modeloCinematico(double Zpos, double Ypos, double Xpos){ //zyx
 
 //Conversiones: IMPORTANTE CALCULAR LIMITES GEOMETRICOS
   Zpos = convert(Zpos,0,4095,250,350);
-  Ypos = convert(Ypos,0,4095,0,75);
-  Xpos = convert(Xpos,0,4095,0,25);
+  Ypos = convert(Ypos,0,4095,0,150);
+  Xpos = convert(Xpos,0,4095,-45,45);
 
 //Variables
   double cita; //Eje Z: Superior
   double citaPrima; //Eje Z: Inferior
+  double citaNewY; //Cita con nuevo offset de alfa
+  double ZnewY,ZnewX; //Longitud de pierna recalculada para nuevos angulos
   double beta; //Eje Z extra
   double Zex; //Z extra
   double Xex = 56.1305; //X extra const
@@ -110,29 +112,32 @@ void modeloCinematico(double Zpos, double Ypos, double Xpos){ //zyx
   //Calculos del eje Y
   alfa = atan(Ypos/Zpos);
   alfa = alfa*RAD_TO_DEG;
+  citaNewY=cita-alfa;
+
+  if(citaNewY!=cita)cita=citaNewY; //Escribe nuevo valor con offset
+
+  ZnewY=Zpos/cos(alfa);
 
   //Calculos del eje X
-  rho = atan(Xpos/Zpos);
+  rho = atan(Xpos/ZnewY);
   rho = rho*RAD_TO_DEG;
+
+  ZnewX = ZnewY/cos(rho);
 
   //CORREGIR Y SEPARAR EJES DE NUEVO ZPOS
 
   if((currentTime-lastTime3)>500){
-    Serial.println("cita: "+String(cita)+" citaP: "+String(citaPrima)+" Zpos: "+String(Zpos)+" alfa: "+String(alfa)+" Ypos: "+String(Ypos)
+    Serial.println("cita: "+String(cita)+" citaP: "+String(citaPrima)+" Zpos: "+String(Zpos)+" ZnewX: "+String(ZnewX)+" alfa: "+String(alfa)+" Ypos: "+String(Ypos)
     +" rho: "+String(rho)+" Xpos: "+String(Xpos));
   }
-
 }
 
-double convert(double x, double in_min, double in_max, double out_min, double out_max)
-{
+double convert(double x, double in_min, double in_max, double out_min, double out_max){
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
 double controllerReader(int analogPin){
-  double aValue = analogRead(analogPin);
-  //aValue=aValue/40.96;
-  return aValue;
+  return analogRead(analogPin);
 }
 
 void serialDecoder(){
