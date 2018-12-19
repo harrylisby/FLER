@@ -105,7 +105,8 @@ void modeloCinematico(double Zpos, double Ypos, double Xpos){ //zyx
   cita = cita*RAD_TO_DEG;
   citaPrima = 2*cita;
   //Leer valor de beta?
-  Zex = Xex*tan(beta);
+  Zex = Xex*tan(beta*DEG_TO_RAD);
+  convert(Zex,-10,10,10,-10);
   //Zex = Zex*RAD_TO_DEG;
 
 
@@ -116,13 +117,16 @@ void modeloCinematico(double Zpos, double Ypos, double Xpos){ //zyx
 
   if(citaNewY!=cita)cita=citaNewY; //Escribe nuevo valor con offset
 
-  ZnewY=Zpos/cos(alfa);
+  ZnewY=Zpos/(cos(alfa*DEG_TO_RAD));
 
   //Calculos del eje X
   rho = atan(Xpos/ZnewY);
   rho = rho*RAD_TO_DEG;
 
-  ZnewX = ZnewY/cos(rho);
+  //ZnewX = ZnewY/cos(rho*DEG_TO_RAD);
+
+  ZnewX = (ZnewY+Zex)/cos(rho*DEG_TO_RAD); //Con offset Zex
+  cita = constrain(cita,0,45);
 
   //CORREGIR Y SEPARAR EJES DE NUEVO ZPOS
 
@@ -162,3 +166,4 @@ uint16_t decodePrintData(char expectedChar,uint16_t currentData){
   }
   return readV;
 }
+
