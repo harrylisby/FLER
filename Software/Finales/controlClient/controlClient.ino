@@ -18,6 +18,9 @@ struct SEND_DATA_STRUCTURE{
   int16_t Z;
   int16_t Y;
   int16_t X;
+  int16_t G;
+  int16_t I;
+  int16_t R;
 };
 //nombre de la estructura
 SEND_DATA_STRUCTURE myDataI2C;
