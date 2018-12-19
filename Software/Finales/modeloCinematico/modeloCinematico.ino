@@ -1,4 +1,19 @@
 #include <EasyTransfer.h>
+#include <EasyTransferI2C.h>
+
+EasyTransferI2C ET;
+
+struct RECEIVE_DATA_STRUCTURE{
+  //Exactamente la misma estructura en el otro microcontrolador.
+  int16_t Z;
+  int16_t Y;
+  int16_t X;
+};
+//nombre de la estructura
+RECEIVE_DATA_STRUCTURE myDataI2C;
+
+//define slave i2c address
+#define I2C_SLAVE_ADDRESS 9
 
 int16_t SP_IF1, SP_IF2, SP_IF3, SP_DF1, SP_DF2, SP_DF3, SP_IR1, SP_IR2, SP_IR3, SP_DR1, SP_DR2, SP_DR3;
 
@@ -46,6 +61,11 @@ void setup(){
   Front.begin(details(frontData), &Serial2);
   Rear.begin(details(rearData), &Serial3);
 
+  //I2C
+  Wire.begin(I2C_SLAVE_ADDRESS);
+  ET.begin(details(myDataI2C), &Wire);
+  Wire.onReceive(receive);
+
   //Joystic
   pinMode(VRx_R,INPUT_ANALOG);
   pinMode(VRy_R,INPUT_ANALOG);
@@ -55,9 +75,9 @@ void setup(){
 }
 
 uint32_t currentTime;
-uint32_t lastTime1;//Para modeloCinematico
+uint32_t lastTime1;//Para modeloCinematicoXYZ
 uint32_t lastTime2;//Para Joystic
-uint32_t lastTime3;//Print modeloCinematico
+uint32_t lastTime3;//Print modeloCinematicoXYZ
 
 void loop(){
   currentTime = millis();
@@ -67,7 +87,7 @@ void loop(){
   serialDecoder();
 
   if((currentTime-lastTime1)>10){
-    modeloCinematico(controllerReader(VRy_L),controllerReader(VRy_R),controllerReader(VRx_R));
+    modeloCinematicoXYZ(controllerReader(VRy_L),controllerReader(VRy_R),controllerReader(VRx_R));
     lastTime1=currentTime;
   }
   
@@ -79,7 +99,7 @@ void loop(){
   }
 }
 
-void modeloCinematico(double Zpos, double Ypos, double Xpos){ //zyx
+void modeloCinematicoXYZ(double Zpos, double Ypos, double Xpos){ //zyx
 
 //Conversiones: IMPORTANTE CALCULAR LIMITES GEOMETRICOS
   Zpos = convert(Zpos,0,4095,250,350);
@@ -166,4 +186,9 @@ uint16_t decodePrintData(char expectedChar,uint16_t currentData){
   }
   return readV;
 }
+
+//i2c handler
+void receive(int numBytes) {}
+
+
 

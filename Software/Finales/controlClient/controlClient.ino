@@ -2,6 +2,33 @@
 #include <WiFiClient.h>
 #include "Nextion.h" 
 
+
+
+#define WIRE_COMMS //Habilitar i2c
+
+#ifdef WIRE_COMMS
+#include <Wire.h>
+#include <EasyTransferI2C.h>
+//Sección de comunicación i2c
+//create object
+EasyTransferI2C ET; 
+
+struct SEND_DATA_STRUCTURE{
+  //Exactamente la misma estructura en el otro microcontrolador.
+  int16_t Z;
+  int16_t Y;
+  int16_t X;
+};
+//nombre de la estructura
+SEND_DATA_STRUCTURE myDataI2C;
+
+//define slave i2c address
+#define I2C_SLAVE_ADDRESS 9
+
+#endif //WIRE_COMMS
+
+
+
 const char* host = "192.168.4.1"; 
 
 String data;
@@ -15,6 +42,13 @@ int timeTracker =0;
 int timeInterval= 1000;
 
 void setup() {
+
+#ifdef WIRE_COMMS
+  Wire.begin();
+  //start the library, pass in the data details and the name of the serial port. Can be Serial, Serial1, Serial2, etc.
+  ET.begin(details(mydata), &Wire);
+#endif //WIRE_COMMS
+
   Serial.begin(9600);        
   delay(10);                            
   WiFi.mode(WIFI_STA);          
@@ -28,6 +62,16 @@ void setup() {
 }
 
 void loop() {
+
+#ifdef WIRE_COMMS
+  myDataI2C.Z = 200;
+  myDataI2C.Y = 300;
+  myDataI2C.X = 400;
+
+  ET.sendData(I2C_SLAVE_ADDRESS);
+#endif //WIRE_COMMS
+
+
 //Inicialización de la comunicación por TCP
         WiFiClient client;
         const int httpPort = 80;
