@@ -95,13 +95,13 @@ pidControl DF3(&DF3_ENCREAD,&DF3_OUT,&frontData.SSP_DF3,FKP,FKI,FKD);
 
 void setup(){
 	Serial.begin(115200);
-	Serial2.begin(9600);
+	Serial3.begin(9600);
 
 #ifdef FRONT  
-    Front.begin(details(frontData), &Serial2); //comunicación frontal
+    Front.begin(details(frontData), &Serial3); //comunicación frontal
 #endif
 #ifdef REAR
-    Rear.begin(details(rearData), &Serial2); //comunicación trasera
+    Rear.begin(details(rearData), &Serial3); //comunicación trasera
 #endif
 
   //EJEMPLO:

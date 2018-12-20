@@ -14,18 +14,18 @@ struct RECEIVE_DATA_STRUCTURE{
 //nombre de la estructura
 RECEIVE_DATA_STRUCTURE controlData;
 
-int16_t SP_IF1, SP_IF2, SP_IF3, SP_DF1, SP_DF2, SP_DF3, SP_IR1, SP_IR2, SP_IR3, SP_DR1, SP_DR2, SP_DR3;
+double SP_IF1, SP_IF2, SP_IF3, SP_DF1, SP_DF2, SP_DF3, SP_IR1, SP_IR2, SP_IR3, SP_DR1, SP_DR2, SP_DR3;
 
 //create object
 EasyTransfer Front;
 EasyTransfer Rear; 
 
-#define FRONT
+#define REAR
 
 //*********************************************************************
 struct SEND_DATA_STRUCTURE{
 
-  int16_t SSP_IF1, SSP_IF2, SSP_IF3, SSP_DF1, SSP_DF2, SSP_DF3;
+  double SSP_IF1, SSP_IF2, SSP_IF3, SSP_DF1, SSP_DF2, SSP_DF3;
   
 };
 
@@ -37,7 +37,7 @@ SEND_DATA_STRUCTURE frontData;
 //*********************************************************************
 struct SEND_DATA_STRUCTURE_2{
 
-  int16_t SSP_IR1, SSP_IR2, SSP_IR3, SSP_DR1, SSP_DR2, SSP_DR3;
+  double SSP_IR1, SSP_IR2, SSP_IR3, SSP_DR1, SSP_DR2, SSP_DR3;
   
 };
 
@@ -55,10 +55,10 @@ SEND_DATA_STRUCTURE_2 rearData;
 void setup(){
   //Serial - EasyTransfer
   Serial.begin(115200);
-  Serial1.begin(9600);
+  //Serial1.begin(9600);
   Serial2.begin(9600);
   Serial3.begin(9600);
-  Control.begin(details(controlData),&Serial1);
+  //Control.begin(details(controlData),&Serial1);
   Front.begin(details(frontData), &Serial2);
   Rear.begin(details(rearData), &Serial3);
 
@@ -160,7 +160,17 @@ void modeloCinematicoXYZ(double Zpos, double Ypos, double Xpos){ //zyx
 //SSP_IF1, SSP_IF2, SSP_IF3, SSP_DF1, SSP_DF2, SSP_DF3;
   frontData.SSP_IF1=rho;
   frontData.SSP_IF2=cita;
-  frontData.SSP_IF3=alfa;
+  frontData.SSP_IF3=citaPrima;
+  frontData.SSP_DF1=rho;
+  frontData.SSP_DF2=cita;
+  frontData.SSP_DF3=citaPrima;
+//SSP_IR1, SSP_IR2, SSP_IR3, SSP_DR1, SSP_DR2, SSP_DR3; 
+  rearData.SSP_IR1=rho;
+  rearData.SSP_IR2=cita;
+  rearData.SSP_IR3=citaPrima;
+  rearData.SSP_DR1=rho;
+  rearData.SSP_DR2=cita;
+  rearData.SSP_DR3=citaPrima;
 
 }
 
