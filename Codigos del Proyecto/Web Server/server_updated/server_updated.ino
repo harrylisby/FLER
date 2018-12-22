@@ -6,7 +6,8 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 
-const char* ssid = "FLER";  // SSID of esp8266
+//Autenticación de la red FLER
+const char* ssid = "FLER"; 
 //const char* password = "fler123";   //
 
 //Sensores
@@ -25,7 +26,7 @@ int INPUT_PIN = A0;
 int timeTracker =0; 
 int timeInterval= 1000;
 
-ESP8266WebServer server(80);    //Specify port for TCP connection
+ESP8266WebServer server(80);   
 
 void handleRoot() {
            
@@ -35,27 +36,27 @@ void handleRoot() {
         s += String(temps);
         s += " Saturación: ";    
         s += String(gass);
-        server.send(200,"text/html",s);      //Reply to the client
+        server.send(200,"text/html",s);     
 }
 
 
 void setup() {
-  delay(200);                           //Stable Wifi
-  Serial.begin(9600);                 //Set Baud Rate
-  pinMode(2, OUTPUT);                   //Led/Solenoid at pin 2
+  
+  delay(200);                    
+  Serial.begin(9600);           
   pinMode(INPUT_PIN, INPUT);
   Serial.setTimeout(2000);
   dht.begin(); 
   Wire.begin();
 
-  //inicializacion de com Wifi
-  WiFi.softAP(ssid);//, password);      //In Access Point Mode
-  IPAddress myIP = WiFi.softAPIP();     //Check the IP assigned. Put this Ip in the client host.
+  //inicialización de comunicación Wifi
+  WiFi.softAP(ssid);//, password);      
+  IPAddress myIP = WiFi.softAPIP();    
   Serial.print("AP IP address: ");
-  Serial.println(myIP);                 //Print the esp8266-01 IP(Client must also be on the save IP series)
-  server.on("/DataSensores", handleRoot);           //Checking client connection
-  server.begin();                       // Start the server
-  Serial.println("Server started");
+  Serial.println(myIP);              
+  server.on("/DataSensores", handleRoot);   
+  server.begin();                     
+
 }
 
 void loop() {
@@ -63,13 +64,13 @@ void loop() {
   if((currentTime-timeTracker)>timeInterval){
     timeTracker=currentTime;
   
-  //Inicia de lectura de Sensores
+//Inicia de lectura de Sensores
   hums = dht.readHumidity();
   temps = dht.readTemperature();
   gass = analogRead(INPUT_PIN);
 
   } 
-  // Check if a client has connected. On first connection switch on the Solenoid on next switch off.
+  
   server.handleClient();
 
 }

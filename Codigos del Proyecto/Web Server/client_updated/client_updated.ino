@@ -4,6 +4,7 @@
 
 const char* host = "192.168.4.1"; 
 
+
 String data;
 float temps;
 float hums;
@@ -28,12 +29,12 @@ void setup() {
 }
 
 void loop() {
-//Inicialización de la comunicación por TCP
+//Inicialización de la comunicación http
         WiFiClient client;
         const int httpPort = 80;
         !client.connect("192.168.4.1", httpPort);
  
- //Inicia la petición del sting /DataSensores al server
+ //Inicia la petición del string /DataSensores al server
         client.print(String("GET ") +"/DataSensores"+" HTTP/1.1\r\n" +
                      "Host: " + host + "\r\n" +
                      "Connection: close\r\n\r\n");         
@@ -49,10 +50,8 @@ void loop() {
         Serial.println(gass); 
         //Serial.print(line);
        }
-       
-//Cierra la conexión entre los dos ESP8266
-       //Serial.println();
 
+//Impresión de datos en la pantalla LCD. 
 
   int currentTime=millis();
   if((currentTime-timeTracker)>timeInterval){
