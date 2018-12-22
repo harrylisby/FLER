@@ -50,8 +50,6 @@ SEND_DATA_STRUCTURE_2 rearData;
 #define VRx_L PA5
 #define VRy_L PA4
 
-
-
 void setup(){
   //Serial - EasyTransfer
   Serial.begin(115200);
@@ -129,7 +127,6 @@ void modeloCinematicoXYZ(double Zpos, double Ypos, double Xpos){ //zyx
   //Leer valor de beta?
   Zex = Xex*tan(beta*DEG_TO_RAD);
   convert(Zex,-10,10,10,-10);
-  //Zex = Zex*RAD_TO_DEG;
 
 
   //Calculos del eje Y

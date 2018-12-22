@@ -5,7 +5,7 @@
 uint32_t lastCycle, currentTime, lastCycle2;
 bool alternar=true;
 
-#define REAR
+#define FRONT
 
 #ifdef FRONT
 //*********************************************************************
@@ -174,14 +174,16 @@ void loop(){
   currentTime=millis();
 
 #ifdef FRONT
-  if((currentTime-lastCycle2)>250){
+  if((currentTime-lastCycle2)>10000){
   	Serial.println(IF2.getEncoder());
+  	lastCycle2=currentTime;
   }
 #endif
 
 #ifdef REAR
-  if((currentTime-lastCycle2)>250){
+  if((currentTime-lastCycle2)>10000){
   	Serial.println(IR2.getEncoder());
+  	lastCycle2=currentTime;
   }
 #endif
 

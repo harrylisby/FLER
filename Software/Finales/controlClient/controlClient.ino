@@ -34,9 +34,9 @@ SEND_DATA_STRUCTURE myDataI2C;
 
 /////////////////////////////////////////////////////////////////
 
-EasyTransfer ET;
-
 #ifdef UART_COMMS
+
+EasyTransfer ET;
 
 struct SEND_DATA_STRUCTURE{
   //Exactamente la misma estructura en el otro microcontrolador.
